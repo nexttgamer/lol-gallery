@@ -184,6 +184,14 @@ a,button,.skin-card,.tool-card,.emote-card,.chip,.cta-primary,.cta-secondary,.lb
 /* Lock body scroll while welcome is up */
 body.welcome-open{overflow:hidden}
 
+/* Full-screen blackout for welcome→main page transition (DROP IN click).
+   Covers EVERYTHING (z-index higher than welcome). enterLobby raises this
+   first to mask the welcome teardown, then fades it out to reveal main page. */
+.page-blackout{position:fixed;inset:0;z-index:100000;background:#000;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.55s cubic-bezier(0.4,0,0.2,1)}
+.page-blackout.up{opacity:1;pointer-events:auto}
+
 /* ── BACKDROP ── deep cosmic gradient behind cascading columns */
 .ws-void{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
@@ -192,27 +200,38 @@ body.welcome-open{overflow:hidden}
     radial-gradient(ellipse 60% 40% at 50% 80%,rgba(255,42,142,0.14) 0%,transparent 60%),
     linear-gradient(180deg,#0A0418 0%,#02010A 50%,#0A0418 100%)}
 
-/* ── 3 COLUMNS of cascading skin tiles ── */
+/* ── 7 COLUMNS of cascading skin tiles ── staggered fade-in builds density */
 .ws-cols{position:absolute;inset:0;z-index:2;
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;
-  padding:0 24px;
+  display:grid;grid-template-columns:repeat(7,1fr);gap:14px;
+  padding:0 14px;
   pointer-events:none;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
-  mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%)}
-.ws-col{position:relative;overflow:visible;height:100vh}
-.ws-track{display:flex;flex-direction:column;gap:16px;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 10%,#000 90%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 10%,#000 90%,transparent 100%)}
+.ws-col{position:relative;overflow:visible;height:100vh;
+  opacity:0;
+  animation:ws-col-in 0.7s cubic-bezier(0.16,1,0.3,1) var(--col-fade,0s) forwards;
+  will-change:opacity}
+@keyframes ws-col-in{to{opacity:1}}
+.ws-track{display:flex;flex-direction:column;gap:14px;
   position:absolute;left:0;right:0;
-  animation:ws-flow var(--dur,22s) linear infinite;
-  animation-delay:var(--delay,0s);
+  animation:ws-flow var(--dur,18s) linear infinite;
+  animation-delay:var(--flow-delay,0s);
   will-change:transform}
 @keyframes ws-flow{
   from{transform:translateY(-50%)}
   to{transform:translateY(0)}
 }
-/* Slight horizontal drift for parallax depth — 3 columns at staggered speeds */
-.ws-col.c1 .ws-track{--dur:22s;--delay:0s}
-.ws-col.c2 .ws-track{--dur:28s;--delay:-9s}   /* offset start mid-flight */
-.ws-col.c3 .ws-track{--dur:24s;--delay:-15s}
+/* 7 columns — staggered fade-in 0.15s..1.05s; varied durations 12s..21s.
+   First 1-2 columns appear early (sparse feel), by 1.05s ALL 7 are visible
+   (density peaks just before WELCOME boom-in at 1.5s). Different speeds
+   give parallax depth so eye can't track a single column. */
+.ws-col.c1{--col-fade:0.15s}.ws-col.c1 .ws-track{--dur:14s;--flow-delay:0s}
+.ws-col.c2{--col-fade:0.30s}.ws-col.c2 .ws-track{--dur:17s;--flow-delay:-7s}
+.ws-col.c3{--col-fade:0.45s}.ws-col.c3 .ws-track{--dur:12s;--flow-delay:-3s}
+.ws-col.c4{--col-fade:0.60s}.ws-col.c4 .ws-track{--dur:19s;--flow-delay:-11s}
+.ws-col.c5{--col-fade:0.75s}.ws-col.c5 .ws-track{--dur:15s;--flow-delay:-8s}
+.ws-col.c6{--col-fade:0.90s}.ws-col.c6 .ws-track{--dur:21s;--flow-delay:-13s}
+.ws-col.c7{--col-fade:1.05s}.ws-col.c7 .ws-track{--dur:16s;--flow-delay:-5s}
 
 /* ── TILE ── single skin card in a cascading column */
 .ws-tile{position:relative;width:100%;aspect-ratio:7/9;
@@ -251,7 +270,7 @@ body.welcome-open{overflow:hidden}
   letter-spacing:10px;color:var(--bp-gold);
   text-shadow:0 0 20px rgba(255,229,0,0.7),0 0 40px rgba(255,229,0,0.4);
   opacity:0;transform:translateY(-10px);
-  animation:ws-rise 0.9s cubic-bezier(0.16,1,0.3,1) 1.0s forwards}
+  animation:ws-rise 0.9s cubic-bezier(0.16,1,0.3,1) 1.3s forwards}
 @keyframes ws-rise{to{opacity:1;transform:translateY(0)}}
 .welcome-brand .gradient{background:linear-gradient(120deg,var(--fn-cyan),var(--bp-gold),var(--fn-magenta));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
@@ -260,24 +279,24 @@ body.welcome-open{overflow:hidden}
   background:linear-gradient(180deg,#FFFFFF 0%,#FFE500 35%,#FF8500 75%,#FF2A8E 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   opacity:0;transform:scale(0.7);
-  animation:ws-welcome-boom 1.2s cubic-bezier(0.16,1,0.3,1) 1.3s forwards;
+  animation:ws-welcome-boom 1.0s cubic-bezier(0.16,1,0.3,1) 1.5s forwards;
   text-transform:uppercase;will-change:opacity,transform;
   filter:drop-shadow(0 0 80px rgba(255,229,0,0.45)) drop-shadow(0 0 40px rgba(255,42,142,0.35))}
 @keyframes ws-welcome-boom{
   0%{opacity:0;transform:scale(0.7)}
-  60%{opacity:1;transform:scale(1.06)}
-  78%{transform:scale(0.99)}
+  60%{opacity:1;transform:scale(1.08)}
+  80%{transform:scale(0.98)}
   100%{opacity:1;transform:scale(1)}
 }
 
 .welcome-tagline{font-family:'Bungee',sans-serif;color:rgba(255,255,255,0.85);
   font-size:clamp(0.75rem,1.1vw,0.95rem);letter-spacing:8px;text-transform:uppercase;
   opacity:0;transform:translateY(8px);
-  animation:ws-rise 0.9s cubic-bezier(0.16,1,0.3,1) 1.9s forwards;
+  animation:ws-rise 0.9s cubic-bezier(0.16,1,0.3,1) 2.1s forwards;
   text-shadow:0 0 14px rgba(0,240,255,0.4)}
 
 .welcome-cta{margin-top:22px;opacity:0;transform:translateY(28px);pointer-events:none;
-  animation:ws-cta-rise 0.9s cubic-bezier(0.16,1,0.3,1) 2.3s forwards}
+  animation:ws-cta-rise 0.9s cubic-bezier(0.16,1,0.3,1) 2.5s forwards}
 @keyframes ws-cta-rise{to{opacity:1;transform:translateY(0);pointer-events:auto}}
 .welcome-cta button{
   font-family:'Bowlby One',cursive;font-size:1.5rem;letter-spacing:6px;
@@ -295,9 +314,13 @@ body.welcome-open{overflow:hidden}
 .welcome-cta button:hover{transform:translateY(-4px) scale(1.04);
   box-shadow:0 0 100px rgba(255,229,0,1),0 20px 60px rgba(255,133,0,0.7),inset 0 -4px 0 rgba(0,0,0,0.2)}
 
+@media (max-width:1100px){
+  .ws-cols{grid-template-columns:repeat(5,1fr);gap:12px;padding:0 10px}
+  .ws-col.c6,.ws-col.c7{display:none}
+}
 @media (max-width:700px){
-  .ws-cols{grid-template-columns:1fr 1fr;gap:14px}
-  .ws-col.c3{display:none}
+  .ws-cols{grid-template-columns:repeat(3,1fr);gap:8px;padding:0 8px}
+  .ws-col.c4,.ws-col.c5{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   .welcome,.welcome-brand,.welcome-text,.welcome-tagline,.welcome-cta,.ws-track{
@@ -797,13 +820,17 @@ body.entered .hero-impact{opacity:1}
 <!-- Combo counter -->
 <div class="combo" id="combo"><span class="multi">SCROLL COMBO</span><span class="big">×<span id="comboNum">0</span></span></div>
 
-<!-- ═══ WELCOME — CASCADING SKIN COLUMNS ═══ -->
+<!-- ═══ WELCOME — CASCADING SKIN COLUMNS (7-col) ═══ -->
 <div class="welcome" id="welcome">
   <div class="ws-void"></div>
   <div class="ws-cols" id="wsCols">
     <div class="ws-col c1"><div class="ws-track" data-col="0"></div></div>
     <div class="ws-col c2"><div class="ws-track" data-col="1"></div></div>
     <div class="ws-col c3"><div class="ws-track" data-col="2"></div></div>
+    <div class="ws-col c4"><div class="ws-track" data-col="3"></div></div>
+    <div class="ws-col c5"><div class="ws-track" data-col="4"></div></div>
+    <div class="ws-col c6"><div class="ws-track" data-col="5"></div></div>
+    <div class="ws-col c7"><div class="ws-track" data-col="6"></div></div>
   </div>
   <div class="ws-darken"></div>
   <div class="welcome-vignette"></div>
@@ -814,6 +841,8 @@ body.entered .hero-impact{opacity:1}
     <div class="welcome-cta"><button id="enterBtn">DROP IN</button></div>
   </div>
 </div>
+<!-- Page transition blackout: covers everything during welcome→main fade -->
+<div class="page-blackout" id="pageBlackout"></div>
 
 <!-- Music FAB -->
 <button class="music-fab muted" id="musicToggle" aria-label="Toggle music">
@@ -1195,10 +1224,11 @@ function spawnCascade() {
   const colors = ['#FFE500','#FF8500','#FF2A8E','#B847FF','#00F0FF','#1FCFCB','#41A3FF','#5DDA42'];
   const skinPaths = skins.map(s => s.img);
 
-  // Distribute the 30 skin paths across 3 columns, then DOUBLE each column's
-  // tiles to make the translateY loop seamless. ~10 unique tiles per column,
-  // doubled = 20 DOM tiles per column, 60 total. Modest perf footprint.
-  const PER_COL = 12;
+  // Distribute 30 skin paths across N columns (7 desktop), then DOUBLE each
+  // column's tiles for seamless translateY loop. Per-col 10 unique tiles,
+  // doubled = 20 DOM tiles per column. With 7 cols → 140 tiles total. Modest
+  // perf cost (one transform per column track, GPU-composited).
+  const PER_COL = 10;
   cols.forEach((track, colIdx) => {
     const frag = document.createDocumentFragment();
     // Build the unique stack first
@@ -1397,11 +1427,32 @@ function toggleMusic() {
 document.getElementById('musicToggle').addEventListener('click', toggleMusic);
 
 function enterLobby() {
+  // 3-phase transition: welcome under blackout → tear down → reveal main page
   const w = document.getElementById('welcome');
-  w.classList.add('fade');
-  document.body.classList.add('entered');
-  lockBodyScroll(false);
-  startMusic();
+  const blackout = document.getElementById('pageBlackout');
+  // Disable click immediately so double-tap doesn't double-trigger.
+  w.style.pointerEvents = 'none';
+
+  // Phase 1 (0–550ms): Black overlay rises OVER welcome.
+  if (blackout) blackout.classList.add('up');
+
+  // Phase 2 (~550ms): Welcome is fully hidden behind blackout. Tear it down,
+  // unlock body scroll, kick off music. User sees pure black during this.
+  setTimeout(() => {
+    w.classList.add('fade');
+    document.body.classList.add('entered');
+    lockBodyScroll(false);
+    startMusic();
+    setTimeout(() => { w.style.display = 'none'; }, 800);
+  }, 550);
+
+  // Phase 3 (1100–1650ms): Main page is now visible behind blackout —
+  // fade blackout out to reveal it.
+  setTimeout(() => {
+    if (blackout) blackout.classList.remove('up');
+    setTimeout(() => { blackout?.remove(); }, 700);
+  }, 1100);
+  return; // skip legacy timeout below
   setTimeout(() => { w.style.display = 'none'; }, 1400);
 }
 document.getElementById('enterBtn').addEventListener('click', enterLobby);
