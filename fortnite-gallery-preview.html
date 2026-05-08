@@ -1442,29 +1442,73 @@ function initComboTracker() {
 }
 
 // YouTube music
+//
+// Browser autoplay policy: playVideo() is blocked outside a user-gesture
+// callback. Our enterLobby fires music inside a setTimeout — by then the
+// gesture context is GONE and Chrome/Safari silently block playback.
+//
+// Fix: use muted autoplay (always allowed) so the player is ALREADY
+// playing in the background when the user clicks DROP IN. The click
+// then just unmute()s — no playVideo() needed in async context.
 let ytPlayer = null, ytReady = false;
+let _wantsAudio = false;            // set when user clicks before API ready
 const TARGET_VOLUME = 65;
+
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('ytplayer', {
     width: '1', height: '1', videoId: 'hgYhws0AHcg',
-    playerVars: { start: 16, controls: 0, autoplay: 0, mute: 1, loop: 1, playlist: 'hgYhws0AHcg', playsinline: 1, disablekb: 1, modestbranding: 1, rel: 0 },
+    playerVars: {
+      start: 16,
+      controls: 0,
+      autoplay: 1,                   // start playing immediately (muted)
+      mute: 1,                       // muted autoplay = browsers allow it
+      loop: 1,
+      playlist: 'hgYhws0AHcg',
+      playsinline: 1,
+      disablekb: 1,
+      modestbranding: 1,
+      rel: 0,
+    },
     events: {
-      onReady: () => { ytReady = true; },
-      onStateChange: (e) => { if (e.data === YT.PlayerState.ENDED && ytPlayer) { ytPlayer.seekTo(16, true); ytPlayer.playVideo(); } },
+      onReady: () => {
+        ytReady = true;
+        // Belt-and-suspenders: ensure the muted player is playing
+        try { ytPlayer.playVideo(); } catch {}
+        // If the user already clicked DROP IN before YT was ready, fade
+        // audio in now.
+        if (_wantsAudio) { _wantsAudio = false; fadeInMusic(); }
+      },
+      onStateChange: (e) => {
+        if (e.data === YT.PlayerState.ENDED && ytPlayer) {
+          ytPlayer.seekTo(16, true); ytPlayer.playVideo();
+        }
+      },
     },
   });
 }
-function startMusic() {
-  if (!ytReady || !ytPlayer) { setTimeout(startMusic, 200); return; }
+
+// Called SYNCHRONOUSLY from the DROP IN click handler so the user-gesture
+// context isn't lost. unMute() and setVolume() don't require a gesture
+// (only playVideo() does), but we keep play calls inline as a safety net.
+function fadeInMusic() {
+  if (!ytReady || !ytPlayer) {
+    _wantsAudio = true;              // queue for when YT API is ready
+    return;
+  }
   try {
-    ytPlayer.unMute(); ytPlayer.setVolume(0); ytPlayer.playVideo();
-    let v = 0; const totalMs = 4000, stepMs = 50; const inc = TARGET_VOLUME / (totalMs / stepMs);
+    ytPlayer.unMute();
+    ytPlayer.setVolume(0);
+    ytPlayer.playVideo();            // safety: ensure playing if autoplay blocked
+    document.getElementById('musicToggle')?.classList.remove('muted');
+    let v = 0;
+    const totalMs = 4000, stepMs = 50;
+    const inc = TARGET_VOLUME / (totalMs / stepMs);
     const timer = setInterval(() => {
-      v += inc; if (v >= TARGET_VOLUME) { v = TARGET_VOLUME; clearInterval(timer); }
+      v += inc;
+      if (v >= TARGET_VOLUME) { v = TARGET_VOLUME; clearInterval(timer); }
       try { ytPlayer.setVolume(Math.round(v)); } catch {}
     }, stepMs);
-    document.getElementById('musicToggle').classList.remove('muted');
-  } catch (err) { console.warn('music start failed', err); }
+  } catch (err) { console.warn('music fade-in failed', err); }
 }
 function toggleMusic() {
   if (!ytReady || !ytPlayer) return;
@@ -1478,19 +1522,23 @@ function enterLobby() {
   // 3-phase transition: welcome under blackout → tear down → reveal main page
   const w = document.getElementById('welcome');
   const blackout = document.getElementById('pageBlackout');
-  // Disable click immediately so double-tap doesn't double-trigger.
   w.style.pointerEvents = 'none';
+
+  // CRITICAL: kick off audio SYNCHRONOUSLY in click handler so the
+  // user-gesture context isn't lost (browser autoplay policy). The
+  // player is already in muted-autoplay state, so this just unmutes
+  // and fades volume up.
+  fadeInMusic();
 
   // Phase 1 (0–550ms): Black overlay rises OVER welcome.
   if (blackout) blackout.classList.add('up');
 
   // Phase 2 (~550ms): Welcome is fully hidden behind blackout. Tear it down,
-  // unlock body scroll, kick off music. User sees pure black during this.
+  // unlock body scroll. (Music already kicked off above.)
   setTimeout(() => {
     w.classList.add('fade');
     document.body.classList.add('entered');
     lockBodyScroll(false);
-    startMusic();
     setTimeout(() => { w.style.display = 'none'; }, 800);
   }, 550);
 
