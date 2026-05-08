@@ -236,13 +236,15 @@ body.welcome-open{overflow:hidden}
    First 1-2 columns appear early (sparse feel), by 1.05s ALL 7 are visible
    (density peaks just before WELCOME boom-in at 1.5s). Different speeds
    give parallax depth so eye can't track a single column. */
-.ws-col.c1{--col-fade:0.15s}.ws-col.c1 .ws-track{--dur:14s;--flow-delay:0s}
-.ws-col.c2{--col-fade:0.30s}.ws-col.c2 .ws-track{--dur:17s;--flow-delay:-7s}
-.ws-col.c3{--col-fade:0.45s}.ws-col.c3 .ws-track{--dur:12s;--flow-delay:-3s}
-.ws-col.c4{--col-fade:0.60s}.ws-col.c4 .ws-track{--dur:19s;--flow-delay:-11s}
-.ws-col.c5{--col-fade:0.75s}.ws-col.c5 .ws-track{--dur:15s;--flow-delay:-8s}
-.ws-col.c6{--col-fade:0.90s}.ws-col.c6 .ws-track{--dur:21s;--flow-delay:-13s}
-.ws-col.c7{--col-fade:1.05s}.ws-col.c7 .ws-track{--dur:16s;--flow-delay:-5s}
+/* PREMIUM PACE: doubled durations (was 12–21s, now 24–34s) for cinematic
+   slow drift. Each column at a slightly different speed for subtle parallax. */
+.ws-col.c1{--col-fade:0.20s}.ws-col.c1 .ws-track{--dur:26s;--flow-delay:0s}
+.ws-col.c2{--col-fade:0.40s}.ws-col.c2 .ws-track{--dur:30s;--flow-delay:-12s}
+.ws-col.c3{--col-fade:0.60s}.ws-col.c3 .ws-track{--dur:24s;--flow-delay:-6s}
+.ws-col.c4{--col-fade:0.80s}.ws-col.c4 .ws-track{--dur:32s;--flow-delay:-18s}
+.ws-col.c5{--col-fade:1.00s}.ws-col.c5 .ws-track{--dur:28s;--flow-delay:-14s}
+.ws-col.c6{--col-fade:1.20s}.ws-col.c6 .ws-track{--dur:34s;--flow-delay:-22s}
+.ws-col.c7{--col-fade:1.40s}.ws-col.c7 .ws-track{--dur:27s;--flow-delay:-9s}
 
 /* ── TILE ── single skin card in a cascading column */
 .ws-tile{position:relative;width:100%;aspect-ratio:7/9;
@@ -266,56 +268,23 @@ body.welcome-open{overflow:hidden}
     radial-gradient(ellipse 70% 55% at 50% 50%,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.65) 30%,rgba(0,0,0,0.3) 60%,transparent 85%),
     linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 25%,rgba(0,0,0,0.15) 75%,rgba(0,0,0,0.55) 100%)}
 
-/* ── SPOTLIGHT ── center radial aura that blooms behind WELCOME + breathes */
-.ws-spotlight{position:absolute;left:50%;top:50%;width:880px;height:880px;
-  margin:-440px 0 0 -440px;z-index:4;pointer-events:none;
-  background:radial-gradient(circle,rgba(0,240,255,0.40) 0%,rgba(184,71,255,0.28) 22%,rgba(255,42,142,0.18) 45%,transparent 70%);
+/* ── SPOTLIGHT ── soft warm aura behind WELCOME. Restrained — no scale pulse,
+   just a subtle breathing brightness shift. Premium ambient lighting. */
+.ws-spotlight{position:absolute;left:50%;top:50%;width:780px;height:780px;
+  margin:-390px 0 0 -390px;z-index:4;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,210,74,0.18) 0%,rgba(255,138,0,0.12) 30%,rgba(184,71,255,0.08) 55%,transparent 75%);
   border-radius:50%;mix-blend-mode:screen;
-  opacity:0;transform:scale(0.7);
-  animation:ws-spotlight-bloom 1.8s cubic-bezier(0.16,1,0.3,1) 1.4s forwards,
-    ws-spotlight-breathe 4.5s ease-in-out 3.2s infinite alternate;
-  will-change:transform,opacity}
+  opacity:0;
+  animation:ws-spotlight-bloom 2.2s cubic-bezier(0.22,1,0.36,1) 1.0s forwards,
+    ws-spotlight-breathe 7s ease-in-out 3.5s infinite alternate;
+  will-change:opacity,filter}
 @keyframes ws-spotlight-bloom{
-  0%{opacity:0;transform:scale(0.7)}
-  40%{opacity:1;transform:scale(1.12)}
-  100%{opacity:0.78;transform:scale(1.0)}
+  from{opacity:0}
+  to{opacity:1}
 }
 @keyframes ws-spotlight-breathe{
-  from{transform:scale(1.0);filter:brightness(1)}
-  to{transform:scale(1.06);filter:brightness(1.18)}
-}
-
-/* ── SHOCKWAVE ── white ring expands at WELCOME boom moment (1.5s) */
-.ws-shock{position:absolute;left:50%;top:50%;width:240px;height:240px;
-  margin:-120px 0 0 -120px;z-index:5;pointer-events:none;
-  border:6px solid rgba(255,255,255,0.95);border-radius:50%;
-  box-shadow:0 0 40px rgba(255,255,255,0.65),0 0 80px rgba(0,240,255,0.35),inset 0 0 30px rgba(255,255,255,0.4);
-  opacity:0;transform:scale(0.3);
-  animation:ws-shock-pulse 1.5s cubic-bezier(0.16,1,0.3,1) 1.5s forwards;
-  will-change:transform,opacity,border-width}
-@keyframes ws-shock-pulse{
-  0%{opacity:0;transform:scale(0.3);border-width:8px}
-  10%{opacity:1}
-  100%{opacity:0;transform:scale(20);border-width:0.5px}
-}
-
-/* ── TILE FLASH ── random tile briefly lights up gold (JS-triggered) */
-.ws-tile.flash{
-  animation:ws-tile-flash 0.65s ease-out forwards;
-  z-index:3;
-  position:relative}
-@keyframes ws-tile-flash{
-  0%{box-shadow:0 0 18px var(--tile-glow,rgba(0,240,255,0.35)),0 6px 16px rgba(0,0,0,0.5);
-    border-color:var(--tile-color,rgba(255,255,255,0.18))}
-  25%{box-shadow:0 0 60px #FFE500,0 0 110px rgba(255,229,0,0.65),0 6px 16px rgba(0,0,0,0.5);
-    border-color:#FFE500;
-    transform:translateZ(0) scale(1.05)}
-  60%{box-shadow:0 0 40px #FF8500,0 0 70px rgba(255,133,0,0.5),0 6px 16px rgba(0,0,0,0.5);
-    border-color:#FF8500;
-    transform:translateZ(0) scale(1.02)}
-  100%{box-shadow:0 0 18px var(--tile-glow,rgba(0,240,255,0.35)),0 6px 16px rgba(0,0,0,0.5);
-    border-color:var(--tile-color,rgba(255,255,255,0.18));
-    transform:translateZ(0) scale(1)}
+  from{filter:brightness(1)}
+  to{filter:brightness(1.15)}
 }
 
 /* ── VIGNETTE ── dramatic dark edges */
@@ -337,23 +306,34 @@ body.welcome-open{overflow:hidden}
 @keyframes ws-rise{to{opacity:1;transform:translateY(0)}}
 .welcome-brand .gradient{background:linear-gradient(120deg,var(--fn-cyan),var(--bp-gold),var(--fn-magenta));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
-/* WELCOME — letter-by-letter cascade pop. Each .l span has --i (0..6) for stagger. */
-.welcome-text{font-family:'Bowlby One',cursive;font-size:clamp(4.5rem,12vw,11rem);line-height:0.85;
-  letter-spacing:-3px;
-  display:flex;flex-direction:row;
-  filter:drop-shadow(0 0 80px rgba(255,229,0,0.45)) drop-shadow(0 0 40px rgba(255,42,142,0.35));
-  text-transform:uppercase}
-.welcome-text .l{display:inline-block;
-  background:linear-gradient(180deg,#FFFFFF 0%,#FFE500 35%,#FF8500 75%,#FF2A8E 100%);
+/* WELCOME — premium elegant reveal. Single text element, restrained scale,
+   continuous subtle shimmer. NO letter-pop (that read as cheap/gimmicky).
+   Inspired by Apple keynote / luxury automotive title sequences. */
+.welcome-text{font-family:'Bowlby One',cursive;font-size:clamp(4.5rem,12vw,11rem);
+  line-height:0.85;letter-spacing:-0.02em;text-transform:uppercase;
+  background:linear-gradient(110deg,
+    #FFFFFF 0%,
+    #FFF1B0 18%,
+    #FFD24A 38%,
+    #FFA300 58%,
+    #FF5E1A 78%,
+    #FF2A8E 100%);
+  background-size:220% 100%;
+  background-position:0% 50%;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  opacity:0;transform:scale(0.4) translateY(20px);
-  animation:ws-letter-pop 0.7s cubic-bezier(0.16,1,0.3,1) calc(1.5s + var(--i,0) * 80ms) forwards;
-  will-change:opacity,transform}
-@keyframes ws-letter-pop{
-  0%{opacity:0;transform:scale(0.4) translateY(20px)}
-  55%{opacity:1;transform:scale(1.15) translateY(-4px)}
-  78%{transform:scale(0.95) translateY(2px)}
-  100%{opacity:1;transform:scale(1) translateY(0)}
+  filter:drop-shadow(0 0 60px rgba(255,210,74,0.42)) drop-shadow(0 6px 22px rgba(255,42,142,0.28));
+  opacity:0;transform:scale(0.97);
+  animation:
+    ws-welcome-rise 1.5s cubic-bezier(0.22,1,0.36,1) 1.4s forwards,
+    ws-welcome-shimmer 9s ease-in-out 3.0s infinite;
+  will-change:opacity,transform,background-position}
+@keyframes ws-welcome-rise{
+  0%{opacity:0;transform:scale(0.97);letter-spacing:0em}
+  100%{opacity:1;transform:scale(1);letter-spacing:-0.02em}
+}
+@keyframes ws-welcome-shimmer{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
 }
 
 .welcome-tagline{font-family:'Bungee',sans-serif;color:rgba(255,255,255,0.85);
@@ -901,19 +881,10 @@ body.entered .hero-impact{opacity:1}
   </div>
   <div class="ws-darken"></div>
   <div class="ws-spotlight"></div>
-  <div class="ws-shock"></div>
   <div class="welcome-vignette"></div>
   <div class="welcome-frame">
     <div class="welcome-brand"><span class="gradient">NEXTTGAMER</span></div>
-    <div class="welcome-text" aria-label="WELCOME">
-      <span class="l" style="--i:0">W</span>
-      <span class="l" style="--i:1">E</span>
-      <span class="l" style="--i:2">L</span>
-      <span class="l" style="--i:3">C</span>
-      <span class="l" style="--i:4">O</span>
-      <span class="l" style="--i:5">M</span>
-      <span class="l" style="--i:6">E</span>
-    </div>
+    <div class="welcome-text">WELCOME</div>
     <div class="welcome-tagline">FORTNITE LOCKER · LV.234</div>
     <div class="welcome-cta"><button id="enterBtn">DROP IN</button></div>
   </div>
@@ -1340,33 +1311,12 @@ function lockBodyScroll(on) {
   document.body.classList.toggle('welcome-open', !!on);
 }
 
-// Random tile flash — picks a tile every ~1.2s and gives it a brief gold
-// highlight. Adds visual life to the cascade without competing with the
-// WELCOME boom. Stops automatically when welcome dies.
-let _flashTimer = null;
-function startTileFlashLoop() {
-  if (_flashTimer) return;
-  _flashTimer = setInterval(() => {
-    const w = document.getElementById('welcome');
-    if (!w || w.classList.contains('fade')) {
-      clearInterval(_flashTimer); _flashTimer = null; return;
-    }
-    const tiles = w.querySelectorAll('.ws-tile');
-    if (!tiles.length) return;
-    const t = tiles[Math.floor(Math.random() * tiles.length)];
-    t.classList.add('flash');
-    setTimeout(() => t.classList.remove('flash'), 700);
-  }, 1100);
-}
-
 let _booted = false;
 function smoothBoot() {
   if (_booted) return;
   _booted = true;
   spawnCascade();
   lockBodyScroll(true);
-  // Start tile flash after cascade is fully visible (1.2s in)
-  setTimeout(startTileFlashLoop, 1400);
 }
 
 function initBursts() {
