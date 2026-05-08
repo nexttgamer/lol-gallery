@@ -1488,14 +1488,17 @@ function onYouTubeIframeAPIReady() {
 }
 
 // Called SYNCHRONOUSLY from the DROP IN click handler so the user-gesture
-// context isn't lost. unMute() and setVolume() don't require a gesture
-// (only playVideo() does), but we keep play calls inline as a safety net.
+// context isn't lost. The player has been silently playing in the
+// background since page load, so on click we rewind to the intended
+// start point (16s) and fade volume up — user hears the song from
+// the beginning, not mid-track.
 function fadeInMusic() {
   if (!ytReady || !ytPlayer) {
     _wantsAudio = true;              // queue for when YT API is ready
     return;
   }
   try {
+    ytPlayer.seekTo(16, true);       // rewind to intended start
     ytPlayer.unMute();
     ytPlayer.setVolume(0);
     ytPlayer.playVideo();            // safety: ensure playing if autoplay blocked
