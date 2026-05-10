@@ -921,7 +921,7 @@ body.entered .hero-impact{opacity:1}
   <div class="hero-grid"></div>
   <div class="hero-impact"></div>
   <div class="hero-aura"></div>
-  <div class="hero-char-wrap"><img class="hero-char" src="./fortnite-assets/heroes/hero-travis-scott.png" alt="Featured" referrerpolicy="no-referrer" crossorigin="anonymous"></div>
+  <div class="hero-char-wrap"><img class="hero-char" src="https://fortnite-api.com/images/cosmetics/br/character_pillowmill_mastery/icon.png" alt="Featured" referrerpolicy="no-referrer" crossorigin="anonymous"></div>
 
   <div class="hero-content">
     <div class="hero-ribbon">MYTHIC LOCKER UNLOCKED</div>
@@ -963,7 +963,7 @@ body.entered .hero-impact{opacity:1}
     <div class="loot-card" data-c="gold"><span class="icon">🎫</span><div class="val" data-count="1">0</div><div class="lbl">BP TIER</div></div>
   </div>
   <div class="rarity-row" id="rarityRow">
-    <div class="rarity-pill" style="--rc:#B847FF"><span class="dot"></span>EPIC <span class="num">0</span></div>
+    <div class="rarity-pill" style="--rc:#B847FF"><span class="dot"></span>EPIC <span class="num">19</span></div>
   </div>
 </section>
 
@@ -974,7 +974,7 @@ body.entered .hero-impact{opacity:1}
     <div class="eyebrow">◆ THE LOCKER ◆</div>
     <h2>SKIN <span class="gradient">VAULT</span></h2>
     <div class="ornament"><div class="line"></div><div class="dia"></div><div class="line"></div></div>
-    <div class="count">19 OUTFITS · TOP 0 SHOWN</div>
+    <div class="count">19 OUTFITS · TOP 19 SHOWN</div>
   </div>
 
   <div class="controls">
@@ -1005,7 +1005,7 @@ body.entered .hero-impact{opacity:1}
     <div class="eyebrow">◆ SWING & SLAM ◆</div>
     <h2>HARVESTING <span class="gradient">TOOLS</span></h2>
     <div class="ornament"><div class="line"></div><div class="dia"></div><div class="line"></div></div>
-    <div class="count">44 PICKAXES · TOP 0 SHOWN</div>
+    <div class="count">44 PICKAXES · TOP 10 SHOWN</div>
   </div>
   <div class="tool-grid" id="toolGrid"></div>
 </section>
@@ -1052,9 +1052,9 @@ body.entered .hero-impact{opacity:1}
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-const skins = [];
-const pickaxes = [];
-const emotes = [];
+const skins = [{"name":"Gwenpool","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_pillowmill_mastery/icon.png"},{"name":"Ringmaster Scarr","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_strategicspur_blast/icon.png"},{"name":"Felina","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_rankedscythe/icon.png"},{"name":"Slayer Juice WRLD","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_kelplinenmagnesium/icon.png"},{"name":"Mysterio","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_soilblend_haunt/icon.png"},{"name":"Peelverine","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_troutwrist_spine/icon.png"},{"name":"Boss Obsidian","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_goldenguardantler/icon.png"},{"name":"Captain Jones","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_herbhutch_breath/icon.png"},{"name":"Doom","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_anglepatch_lodge/icon.png"},{"name":"Shuri","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_snapfreeze_hunt/icon.png"},{"name":"Rust","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_quickburst_plains/icon.png"},{"name":"War Machine","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_mooseporch_math/icon.png"},{"name":"The Machinist","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_prairieskip_forge/icon.png"},{"name":"T-60 Power Armor","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_radiumfox_flame/icon.png"},{"name":"Emma Frost","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_pipershelf_pearl/icon.png"},{"name":"Peabody","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_speedypeas_sprig/icon.png"},{"name":"Brite Raider","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_shiverflame_ace/icon.png"},{"name":"UNSC Spartan","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_claimreflect/icon.png"},{"name":"Marius","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/cid_a_095_athena_commando_m_doubleagentgrey/icon.png"}];
+const pickaxes = [{"name":"Sparkling Star","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_sparklechop/icon.png"},{"name":"Vibranium Spear","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_snapfreeze/icon.png"},{"name":"999 Knives","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_kelplinenmagnesium/icon.png"},{"name":"Energy Sword","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_claimreflect/icon.png"},{"name":"Don's Dominator","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_megatoof/icon.png"},{"name":"The Doomblade","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_anglepatch/icon.png"},{"name":"Bitey","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_shiverflame/icon.png"},{"name":"B Splat","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_paintsplash_bass/icon.png"},{"name":"Paint Pummelers","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_graffititon/icon.png"},{"name":"Magnetized Scrap","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_roundthumb/icon.png"}];
+const emotes = [{"name":"Crowning Achievement","img":"https://fortnite-api.com/images/cosmetics/br/eid_coronet/icon.png"},{"name":"Boogie Down","img":"https://fortnite-api.com/images/cosmetics/br/eid_boogiedown/icon.png"},{"name":"Peel Out","img":"https://fortnite-api.com/images/cosmetics/br/eid_troutwrist/icon.png"},{"name":"(Snikt!)","img":"https://fortnite-api.com/images/cosmetics/br/eid_troutwrist_spine/icon.png"},{"name":"Fist Bump","img":"https://fortnite-api.com/images/cosmetics/br/eid_oysterknock/icon.png"},{"name":"Doom's Domain","img":"https://fortnite-api.com/images/cosmetics/br/eid_anglepatch/icon.png"},{"name":"Wasteland Rock","img":"https://fortnite-api.com/images/cosmetics/br/eid_quickburst/icon.png"},{"name":"Make a Seat","img":"https://fortnite-api.com/images/cosmetics/br/eid_prairieskip/icon.png"},{"name":"Fire Show","img":"https://fortnite-api.com/images/cosmetics/br/eid_strategicspur/icon.png"},{"name":"Brite Moves","img":"https://fortnite-api.com/images/cosmetics/br/eid_shiverflame/icon.png"},{"name":"Pea Part Harmony","img":"https://fortnite-api.com/images/cosmetics/br/eid_speedypeas/icon.png"},{"name":"Codsworth's Cleanup","img":"https://fortnite-api.com/images/cosmetics/br/eid_radiumfox/icon.png"},{"name":"Vanguard's Charge","img":"https://fortnite-api.com/images/cosmetics/br/eid_electric/icon.png"},{"name":"Gwen-Step","img":"https://fortnite-api.com/images/cosmetics/br/eid_pillowmill/icon.png"},{"name":"Fireworks Salvo","img":"https://fortnite-api.com/images/cosmetics/br/eid_mooseporch/icon.png"},{"name":"The Break Shot","img":"https://fortnite-api.com/images/cosmetics/br/eid_stagecue/icon.png"},{"name":"Captain Llamerica","img":"https://fortnite-api.com/images/cosmetics/br/eid_herbhutch/icon.png"},{"name":"Jet Signals","img":"https://fortnite-api.com/images/cosmetics/br/eid_stormaviator/icon.png"},{"name":"Mysterio's Magic Trick","img":"https://fortnite-api.com/images/cosmetics/br/eid_soilblend/icon.png"},{"name":"Cauldron Chill","img":"https://fortnite-api.com/images/cosmetics/br/eid_cauldron/icon.png"},{"name":"Lil' Ghost","img":"https://fortnite-api.com/images/cosmetics/br/eid_claimreflect/icon.png"},{"name":"Hellfire Dance","img":"https://fortnite-api.com/images/cosmetics/br/eid_pipershelf/icon.png"},{"name":"Dance Moves","img":"https://fortnite-api.com/images/cosmetics/br/eid_dancemoves/icon.png"},{"name":"Stand Surfer","img":"https://fortnite-api.com/images/cosmetics/br/eid_mic_monkeystaff/icon.png"}];
 
 const RARITY = {
   marvel:    { color:"#ED1E2C", label:"Marvel" },
