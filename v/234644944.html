@@ -2825,6 +2825,8 @@ const page = document.getElementById('page');
 // Transition variant selector — ?t=hole | breach | scope (default: hole)
 const transitionVariant = (new URLSearchParams(location.search).get('t') || 'hole').toLowerCase();
 document.body.dataset.transition = ['breach','hole','scope'].includes(transitionVariant) ? transitionVariant : 'hole';
+// Shot-aftermath whoosh variant — ?sfx=wormhole | warp | void | riser
+window.__sfxVariant = (new URLSearchParams(location.search).get('sfx') || 'wormhole').toLowerCase();
 
 let introSkipped = false;
 
@@ -3036,7 +3038,7 @@ function impactFx(impactX, impactY){
         requestAnimationFrame(()=>{
           zoomHole.classList.add('fire');
           curtain.classList.add('cover');
-          sfx.whoosh();  // bass whoosh synced to the hole expansion
+          sfx.whoosh(window.__sfxVariant);  // bass whoosh synced to the hole expansion
         });
       });
     }, 1100);  // 1s after the HEADSHOT pops at +180ms (settles ~+1280ms)
@@ -3530,50 +3532,147 @@ const sfx = (()=>{
         osc.stop(c.currentTime + 0.3);
       } catch{}
     },
-    // Bass whoosh / wormhole — descending bass tone + filtered noise that
-    // breathes over ~1.5s. Synced to the bullet-hole expanding to fullscreen
-    // for the "screen pulling into the void" feel.
-    whoosh(){
+    // Shot-aftermath whoosh — 4 alternatives selectable via ?sfx=...
+    // Synced to the bullet-hole expanding to fullscreen. Each variant has
+    // a distinct character so the operator can pick by feel.
+    whoosh(variant){
       try{
         const c = ensure();
         const t0 = c.currentTime;
-        const dur = 1.55;
-        // Descending bass tone (sine) — 220Hz → 55Hz, low-Q resonance
-        const osc = c.createOscillator();
-        const oscGain = c.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(220, t0);
-        osc.frequency.exponentialRampToValueAtTime(55, t0 + dur);
-        oscGain.gain.setValueAtTime(0.0001, t0);
-        oscGain.gain.exponentialRampToValueAtTime(0.32, t0 + 0.10);
-        oscGain.gain.exponentialRampToValueAtTime(0.18, t0 + 0.80);
-        oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-        osc.connect(oscGain).connect(c.destination);
-        osc.start(t0);
-        osc.stop(t0 + dur + 0.05);
+        const v = String(variant || 'wormhole').toLowerCase();
 
-        // Filtered noise sweep — opens up as the hole reaches the edge
-        const sampleRate = c.sampleRate;
-        const buf = c.createBuffer(1, Math.floor(sampleRate * dur), sampleRate);
-        const data = buf.getChannelData(0);
-        for(let i=0;i<data.length;i++){
-          // Brown-ish noise (cumulative)
-          data[i] = (Math.random() * 2 - 1) * 0.6;
+        // ─── A · WORMHOOLE — descending bass + brown-noise sweep ───
+        if(v === 'wormhole' || !v || v === 'a'){
+          const dur = 1.55;
+          const osc = c.createOscillator();
+          const oscGain = c.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(220, t0);
+          osc.frequency.exponentialRampToValueAtTime(55, t0 + dur);
+          oscGain.gain.setValueAtTime(0.0001, t0);
+          oscGain.gain.exponentialRampToValueAtTime(0.32, t0 + 0.10);
+          oscGain.gain.exponentialRampToValueAtTime(0.18, t0 + 0.80);
+          oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          osc.connect(oscGain).connect(c.destination);
+          osc.start(t0); osc.stop(t0 + dur + 0.05);
+
+          const sampleRate = c.sampleRate;
+          const buf = c.createBuffer(1, Math.floor(sampleRate * dur), sampleRate);
+          const data = buf.getChannelData(0);
+          for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1) * 0.6;
+          const noise = c.createBufferSource(); noise.buffer = buf;
+          const filt = c.createBiquadFilter();
+          filt.type = 'lowpass'; filt.Q.value = 0.7;
+          filt.frequency.setValueAtTime(400, t0);
+          filt.frequency.exponentialRampToValueAtTime(2400, t0 + dur);
+          const nGain = c.createGain();
+          nGain.gain.setValueAtTime(0.0001, t0);
+          nGain.gain.exponentialRampToValueAtTime(0.18, t0 + 0.25);
+          nGain.gain.exponentialRampToValueAtTime(0.10, t0 + 1.0);
+          nGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          noise.connect(filt).connect(nGain).connect(c.destination);
+          noise.start(t0);
+          return;
         }
-        const noise = c.createBufferSource();
-        noise.buffer = buf;
-        const filt = c.createBiquadFilter();
-        filt.type = 'lowpass';
-        filt.Q.value = 0.7;
-        filt.frequency.setValueAtTime(400, t0);
-        filt.frequency.exponentialRampToValueAtTime(2400, t0 + dur);
-        const nGain = c.createGain();
-        nGain.gain.setValueAtTime(0.0001, t0);
-        nGain.gain.exponentialRampToValueAtTime(0.18, t0 + 0.25);
-        nGain.gain.exponentialRampToValueAtTime(0.10, t0 + 1.0);
-        nGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-        noise.connect(filt).connect(nGain).connect(c.destination);
-        noise.start(t0);
+
+        // ─── B · WARP — rising sawtooth + tightening bandpass ───
+        if(v === 'warp' || v === 'b'){
+          const dur = 1.5;
+          const osc = c.createOscillator();
+          const filt = c.createBiquadFilter();
+          const oscGain = c.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(80, t0);
+          osc.frequency.exponentialRampToValueAtTime(1200, t0 + dur);
+          filt.type = 'bandpass';
+          filt.frequency.setValueAtTime(400, t0);
+          filt.frequency.exponentialRampToValueAtTime(2000, t0 + dur);
+          filt.Q.setValueAtTime(2, t0);
+          filt.Q.exponentialRampToValueAtTime(8, t0 + dur);
+          oscGain.gain.setValueAtTime(0.0001, t0);
+          oscGain.gain.exponentialRampToValueAtTime(0.20, t0 + 0.15);
+          oscGain.gain.exponentialRampToValueAtTime(0.30, t0 + 1.2);
+          oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          osc.connect(filt).connect(oscGain).connect(c.destination);
+          osc.start(t0); osc.stop(t0 + dur + 0.05);
+          return;
+        }
+
+        // ─── C · VOID — sub-bass thud + sustained low rumble ───
+        if(v === 'void' || v === 'c'){
+          const dur = 1.5;
+          // Sub thud (front-loaded impact)
+          const sub = c.createOscillator();
+          const subGain = c.createGain();
+          sub.type = 'sine';
+          sub.frequency.setValueAtTime(100, t0);
+          sub.frequency.exponentialRampToValueAtTime(38, t0 + 0.4);
+          subGain.gain.setValueAtTime(0.0001, t0);
+          subGain.gain.exponentialRampToValueAtTime(0.55, t0 + 0.02);
+          subGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.55);
+          sub.connect(subGain).connect(c.destination);
+          sub.start(t0); sub.stop(t0 + 0.6);
+
+          // Sustained low rumble — brown-noise lowpass
+          const sampleRate = c.sampleRate;
+          const buf = c.createBuffer(1, Math.floor(sampleRate * dur), sampleRate);
+          const data = buf.getChannelData(0);
+          let last = 0;
+          for(let i=0;i<data.length;i++){
+            last = (last + (Math.random()*2-1) * 0.5) * 0.96;
+            data[i] = last * 0.7;
+          }
+          const noise = c.createBufferSource(); noise.buffer = buf;
+          const filt = c.createBiquadFilter();
+          filt.type = 'lowpass'; filt.frequency.value = 230; filt.Q.value = 0.6;
+          const nGain = c.createGain();
+          nGain.gain.setValueAtTime(0.0001, t0);
+          nGain.gain.exponentialRampToValueAtTime(0.30, t0 + 0.3);
+          nGain.gain.exponentialRampToValueAtTime(0.18, t0 + 1.0);
+          nGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          noise.connect(filt).connect(nGain).connect(c.destination);
+          noise.start(t0);
+          return;
+        }
+
+        // ─── D · RISER — cinematic accelerating pitch + swelling noise ───
+        if(v === 'riser' || v === 'd'){
+          const dur = 1.6;
+          const osc = c.createOscillator();
+          const oscGain = c.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(60, t0);
+          osc.frequency.exponentialRampToValueAtTime(180, t0 + 0.8);
+          osc.frequency.exponentialRampToValueAtTime(480, t0 + dur);
+          oscGain.gain.setValueAtTime(0.0001, t0);
+          oscGain.gain.linearRampToValueAtTime(0.15, t0 + 0.5);
+          oscGain.gain.linearRampToValueAtTime(0.35, t0 + 1.3);
+          oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          osc.connect(oscGain).connect(c.destination);
+          osc.start(t0); osc.stop(t0 + dur + 0.05);
+
+          const sampleRate = c.sampleRate;
+          const buf = c.createBuffer(1, Math.floor(sampleRate * dur), sampleRate);
+          const data = buf.getChannelData(0);
+          let last = 0;
+          for(let i=0;i<data.length;i++){
+            last = (last + (Math.random()*2-1) * 0.45) * 0.95;
+            data[i] = last * 0.6;
+          }
+          const noise = c.createBufferSource(); noise.buffer = buf;
+          const filt = c.createBiquadFilter();
+          filt.type = 'lowpass';
+          filt.frequency.setValueAtTime(300, t0);
+          filt.frequency.exponentialRampToValueAtTime(1800, t0 + dur);
+          const nGain = c.createGain();
+          nGain.gain.setValueAtTime(0.0001, t0);
+          nGain.gain.linearRampToValueAtTime(0.08, t0 + 0.4);
+          nGain.gain.linearRampToValueAtTime(0.25, t0 + 1.3);
+          nGain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          noise.connect(filt).connect(nGain).connect(c.destination);
+          noise.start(t0);
+          return;
+        }
       } catch{}
     },
     // Pistol shot — sharp sawtooth pitch dive + brief noise burst
