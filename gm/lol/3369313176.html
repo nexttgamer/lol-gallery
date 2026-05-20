@@ -104,12 +104,12 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
 }
 
 /* ────── BRAND HERO (#1 LOL ACCOUNT SELLER) ───────────────────────────────── */
-.brand-hero{position:relative;min-height:100vh;background:transparent;
-  overflow:hidden;z-index:2;display:flex;flex-direction:column;align-items:center;
-  padding:48px clamp(20px,5vw,72px) 120px;color:var(--lol-parchment);text-align:center;isolation:isolate;}
-/* Fade-to-atmosphere gradient at the bottom — bleeds into account-overview. */
-.brand-hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:160px;pointer-events:none;
-  background:linear-gradient(180deg,transparent,rgba(4,7,13,0.55) 60%,rgba(4,7,13,0.9));z-index:1;}
+/* Both .brand-hero and .account-overview are FULLY transparent so the shared
+   .page-atmosphere bleeds through without any visible seam. No fade-out, no
+   border, no overlay between them — they look like one continuous page. */
+.brand-hero{position:relative;min-height:100vh;background:transparent;overflow:visible;
+  z-index:2;display:flex;flex-direction:column;align-items:center;
+  padding:48px clamp(20px,5vw,72px) 40px;color:var(--lol-parchment);text-align:center;isolation:isolate;}
 .brand-laurels{position:absolute;top:32%;left:0;right:0;height:340px;display:flex;justify-content:space-between;
   padding:0 clamp(2vw,5vw,8vw);pointer-events:none;z-index:2;}
 .brand-laurels .laurel{width:clamp(80px,12vw,170px);color:var(--lol-gold);opacity:0.42;}
@@ -219,10 +219,9 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
 @keyframes cta-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 
 /* ────── ACCOUNT OVERVIEW — premium crest + stat row + rarity ribbon ─────── */
-.account-overview{position:relative;z-index:2;padding:0 clamp(20px,5vw,72px) 60px;
+.account-overview{position:relative;z-index:2;padding:20px clamp(20px,5vw,72px) 60px;
   display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--lol-parchment);
-  /* Pull up so it overlaps the brand-hero fade — feels like a continuum */
-  margin-top:-80px;}
+  background:transparent;}
 
 .ao-divider{display:inline-flex;align-items:center;gap:18px;margin:0 auto 40px;
   font-family:'Marcellus SC',serif;font-size:11px;letter-spacing:0.55em;color:var(--lol-gold);text-transform:uppercase;}
