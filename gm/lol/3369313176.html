@@ -89,6 +89,118 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
 .particle.orb{background:radial-gradient(circle,rgba(200,155,60,0.15),rgba(100,80,40,0.05),transparent);filter:blur(4px)}
 @keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}85%{opacity:0.7}100%{transform:translateY(-10vh) scale(1);opacity:0}}
 
+/* === FEED-THE-PORO MINI-GAME (bottom-left widget) ========================== */
+.poro-pet{position:fixed;left:16px;bottom:16px;z-index:140;width:158px;
+  background:linear-gradient(180deg,rgba(20,28,48,0.88) 0%,rgba(8,13,24,0.96) 100%);
+  border:1px solid rgba(200,170,110,0.32);
+  box-shadow:0 16px 44px -12px rgba(0,0,0,0.7),inset 0 0 0 1px rgba(255,255,255,0.04),0 0 30px -8px rgba(200,170,110,0.18);
+  padding:12px 12px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:'Marcellus SC',serif;user-select:none;cursor:pointer;
+  transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;}
+.poro-pet:hover{transform:translateY(-3px);border-color:var(--lol-gold);
+  box-shadow:0 22px 60px -14px rgba(0,0,0,0.85),inset 0 0 0 1px rgba(255,255,255,0.06),0 0 50px -10px rgba(200,170,110,0.32);}
+.poro-pet::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:2px;
+  background:linear-gradient(90deg,transparent 5%,var(--lol-gold-deep) 25%,var(--lol-gold) 50%,var(--lol-gold-deep) 75%,transparent 95%);}
+
+.poro-header{display:flex;align-items:center;justify-content:space-between;width:100%;
+  font-size:8.5px;letter-spacing:0.4em;color:var(--lol-gold);text-transform:uppercase;}
+.poro-header .poro-snowflake{color:var(--lol-hex-bright);font-size:11px;
+  animation:poro-snow 5s linear infinite;display:inline-block;}
+@keyframes poro-snow{to{transform:rotate(360deg)}}
+
+.poro-stage{position:relative;width:100%;height:96px;
+  display:flex;align-items:center;justify-content:center;overflow:visible;}
+.poro-body{width:88px;height:88px;position:relative;transform-origin:center bottom;
+  animation:poro-idle 3.4s ease-in-out infinite;}
+.poro-body.eating{animation:poro-chomp 0.6s ease both;}
+.poro-body.happy{animation:poro-bounce 0.75s ease-in-out infinite;}
+.poro-body.sad{filter:saturate(0.25) brightness(0.55);animation:none;}
+@keyframes poro-idle{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.018)}}
+@keyframes poro-chomp{0%,100%{transform:scale(1) rotate(0)}30%{transform:scale(1.12) rotate(-5deg)}60%{transform:scale(1.04) rotate(4deg)}}
+@keyframes poro-bounce{0%,100%{transform:translateY(0) rotate(-2.5deg) scale(1)}50%{transform:translateY(-7px) rotate(2.5deg) scale(1.04)}}
+.poro-body svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));}
+.poro-zzz{position:absolute;top:-2px;right:6px;font-family:'Cinzel Decorative',serif;font-size:14px;
+  color:rgba(180,200,220,0.78);font-weight:900;opacity:0;}
+.poro-zzz span{display:inline-block;margin-left:1px;animation-delay:0.5s;}
+.poro-body.sad+.poro-zzz,.poro-stage:has(.poro-body.sad) .poro-zzz{opacity:1;animation:poro-zzz 2.4s ease-in-out infinite;}
+.poro-stage:has(.poro-body.sad) .poro-zzz span{animation:poro-zzz 2.4s ease-in-out infinite;animation-delay:0.4s;}
+@keyframes poro-zzz{0%,100%{opacity:0;transform:translate(0,0)}25%{opacity:1}80%{transform:translate(6px,-16px)}}
+
+.poro-snack{position:absolute;right:-2px;top:6px;font-size:24px;background:none;border:0;padding:4px;
+  cursor:pointer;line-height:1;filter:drop-shadow(0 2px 5px rgba(0,0,0,0.7));
+  transition:transform 0.55s cubic-bezier(0.5,1.6,0.4,1),opacity 0.45s;animation:poro-snack-bob 2.6s ease-in-out infinite;}
+.poro-snack:hover{transform:scale(1.2) rotate(-10deg);}
+@keyframes poro-snack-bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-3px) rotate(6deg)}}
+.poro-snack.feeding{transform:translate(-48px,30px) scale(0.4) rotate(-200deg);opacity:0;pointer-events:none;animation:none;}
+
+.poro-bubble{position:absolute;top:-6px;left:50%;
+  transform:translate(-50%,-100%) scale(0.7);
+  background:linear-gradient(180deg,#fff4d0,#c8aa6e);color:#0a0f1c;padding:5px 12px;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:11.5px;letter-spacing:0.03em;
+  border:1px solid var(--lol-gold);white-space:nowrap;opacity:0;
+  transition:opacity 0.28s,transform 0.32s cubic-bezier(0.5,1.5,0.5,1);pointer-events:none;
+  box-shadow:0 6px 18px rgba(0,0,0,0.45);z-index:5;}
+.poro-bubble::after{content:'';position:absolute;left:50%;bottom:-6px;width:0;height:0;
+  border:6px solid transparent;border-top-color:var(--lol-gold);transform:translateX(-50%);}
+.poro-bubble.show{opacity:1;transform:translate(-50%,-100%) scale(1);}
+
+.poro-floats{position:absolute;inset:0;pointer-events:none;}
+.poro-floats .ph-float{position:absolute;font-size:14px;color:#ff5b8a;font-weight:900;
+  text-shadow:0 0 8px rgba(255,91,138,0.8),0 1px 0 rgba(255,255,255,0.4);
+  animation:ph-rise 1.4s ease-out forwards;pointer-events:none;}
+.poro-floats .ph-float.sparkle{color:var(--lol-gold-bright);
+  text-shadow:0 0 10px rgba(200,170,110,0.9);}
+@keyframes ph-rise{0%{opacity:0;transform:translateY(0) scale(0.5) rotate(-12deg)}
+  18%{opacity:1;transform:translateY(-10px) scale(1.15) rotate(10deg)}
+  100%{opacity:0;transform:translateY(-72px) scale(0.7) rotate(-18deg)}}
+
+.poro-meter{display:flex;gap:5px;align-items:center;}
+.poro-meter .ph-heart{font-size:12px;line-height:1;color:rgba(200,170,110,0.22);
+  transition:color 0.4s,text-shadow 0.4s;}
+.poro-meter .ph-heart.lit{color:#ff5b8a;text-shadow:0 0 8px rgba(255,91,138,0.8);
+  animation:ph-pop 0.45s ease;}
+.poro-pet:has(.poro-body.happy) .poro-meter .ph-heart{
+  animation:ph-rainbow 1.4s ease-in-out infinite;}
+.poro-pet:has(.poro-body.happy) .poro-meter .ph-heart:nth-child(2){animation-delay:0.15s;}
+.poro-pet:has(.poro-body.happy) .poro-meter .ph-heart:nth-child(3){animation-delay:0.3s;}
+.poro-pet:has(.poro-body.happy) .poro-meter .ph-heart:nth-child(4){animation-delay:0.45s;}
+.poro-pet:has(.poro-body.happy) .poro-meter .ph-heart:nth-child(5){animation-delay:0.6s;}
+@keyframes ph-pop{0%{transform:scale(0.5)}60%{transform:scale(1.35)}100%{transform:scale(1)}}
+@keyframes ph-rainbow{0%,100%{color:#ff5b8a;text-shadow:0 0 8px rgba(255,91,138,0.8)}
+  50%{color:#ffd76b;text-shadow:0 0 10px rgba(255,215,107,0.9)}}
+
+.poro-cta{font-size:8.5px;letter-spacing:0.36em;color:rgba(230,218,184,0.45);text-transform:uppercase;
+  transition:color 0.3s;}
+.poro-pet:hover .poro-cta{color:var(--lol-gold-bright);}
+
+@media (max-width:760px){
+  .poro-pet{left:10px;bottom:10px;width:128px;padding:8px 9px 10px;gap:6px;}
+  .poro-header{font-size:7.5px;letter-spacing:0.32em;}
+  .poro-stage{height:78px;}
+  .poro-body{width:70px;height:70px;}
+  .poro-snack{font-size:20px;right:0;top:4px;}
+  .poro-meter .ph-heart{font-size:10px;}
+  .poro-cta{font-size:7.5px;letter-spacing:0.28em;}
+}
+
+/* === SCROLL PROGRESS BAR (fixed at top) ==================================== */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:300;
+  background:linear-gradient(180deg,rgba(4,7,13,0.85),rgba(4,7,13,0.55));
+  backdrop-filter:blur(6px);border-bottom:1px solid rgba(200,170,110,0.16);
+  box-shadow:0 2px 14px rgba(0,0,0,0.5);}
+.scroll-progress .sp-bar{position:relative;height:100%;width:0%;
+  background:linear-gradient(90deg,#5e3e15 0%,#c8aa6e 45%,#fff4d0 60%,#c8aa6e 75%,#785a28 100%);
+  box-shadow:0 0 14px rgba(200,170,110,0.6),0 0 4px var(--lol-gold-bright);
+  transition:width 0.12s ease-out;}
+.scroll-progress .sp-bar::after{content:'';position:absolute;top:50%;right:-4px;width:8px;height:8px;
+  background:radial-gradient(circle,#fff4d0,#c8aa6e 60%,transparent);transform:translateY(-50%) rotate(45deg);
+  box-shadow:0 0 8px var(--lol-gold-bright);opacity:0;transition:opacity 0.2s ease;}
+.scroll-progress .sp-bar.lit::after{opacity:1;}
+.scroll-progress .sp-pct{position:absolute;top:6px;right:14px;font-family:'Marcellus SC',serif;font-size:9px;
+  letter-spacing:0.42em;color:var(--lol-gold);text-shadow:0 0 8px rgba(200,170,110,0.6);
+  background:rgba(4,7,13,0.85);padding:3px 10px;border:1px solid rgba(200,170,110,0.3);text-transform:uppercase;
+  pointer-events:none;}
+
 /* === UNIFIED ATMOSPHERE — single fixed backdrop shared by every section ===== */
 :root{
   --lol-ink:#080d18;
@@ -129,10 +241,10 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
   text-shadow:0 0 10px rgba(200,170,110,0.8);}
 
 .emblem-wrap{position:relative;margin:28px 0 14px;z-index:5;
-  display:flex;align-items:center;justify-content:center;}
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;}
 .emblem-glow{position:absolute;inset:-50px;
   background:radial-gradient(circle,rgba(255,229,179,0.55) 0%,rgba(200,170,110,0.25) 30%,transparent 65%);
-  filter:blur(40px);animation:emblem-pulse 3.4s ease-in-out infinite alternate;}
+  filter:blur(40px);animation:emblem-pulse 3.4s ease-in-out infinite alternate;pointer-events:none;}
 @keyframes emblem-pulse{0%{transform:scale(0.88);opacity:0.7}100%{transform:scale(1.12);opacity:1}}
 .emblem-no1{position:relative;display:inline-flex;align-items:baseline;line-height:0.85;
   font-family:'Cinzel Decorative',serif;font-weight:900;
@@ -141,9 +253,10 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
   filter:drop-shadow(0 6px 0 rgba(0,0,0,0.7)) drop-shadow(0 0 60px rgba(200,170,110,0.45));}
 .emblem-no1 .hash{font-size:6.5rem;margin-right:-4px;}
 .emblem-no1 .one{font-size:11rem;}
-.emblem-stars{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);
-  font-size:15px;letter-spacing:8px;color:var(--lol-gold-bright);
-  text-shadow:0 0 12px rgba(200,170,110,0.8);z-index:6;}
+/* Stars now sit BELOW the emblem as a flex-column sibling — no more absolute
+   positioning that drifted into the "1" descender area. */
+.emblem-stars{font-size:16px;letter-spacing:14px;padding-left:14px;
+  color:var(--lol-gold-bright);text-shadow:0 0 12px rgba(200,170,110,0.8);}
 
 .brand-headline{position:relative;z-index:6;margin-top:42px;display:flex;flex-direction:column;gap:6px;align-items:center;}
 .line-eyebrow{font-family:'Marcellus SC',serif;font-size:12px;letter-spacing:0.65em;
@@ -470,6 +583,12 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
 </style>
 </head>
 <body>
+
+<!-- Scroll progress bar (fixed at top of viewport) -->
+<div class="scroll-progress" aria-hidden="true">
+  <div class="sp-bar" id="spBar"></div>
+  <div class="sp-pct" id="spPct">0%</div>
+</div>
 
 <!-- INTRO SCREEN -->
 <div class="intro" id="intro">
@@ -91118,6 +91237,64 @@ Buy on GameBoost
 <!-- Music Button -->
 <button class="music-btn" id="musicBtn" title="Toggle Music">♫</button>
 
+<!-- ═══ Feed-the-Poro mini-game (bottom-left widget) ═══ -->
+<aside class="poro-pet" id="poroPet" role="region" aria-label="Feed the Poro mini-game">
+  <div class="poro-header">
+    <span class="poro-title">Poro Pet</span>
+    <span class="poro-snowflake" aria-hidden="true">❄</span>
+  </div>
+  <div class="poro-stage">
+    <div class="poro-bubble" id="poroBubble" aria-live="polite"></div>
+    <div class="poro-body" id="poroBody">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <radialGradient id="poro-blush" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffb0bd" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#ffb0bd" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- fluffy body cloud -->
+        <g class="poro-fluff" fill="#fafaee">
+          <ellipse cx="60" cy="68" rx="40" ry="34"/>
+          <circle cx="22" cy="56" r="11"/>
+          <circle cx="98" cy="56" r="11"/>
+          <circle cx="20" cy="82" r="10"/>
+          <circle cx="100" cy="82" r="10"/>
+          <circle cx="36" cy="38" r="9"/>
+          <circle cx="84" cy="38" r="9"/>
+          <circle cx="60" cy="32" r="10"/>
+          <circle cx="60" cy="100" r="9"/>
+        </g>
+        <!-- ear tufts / horns -->
+        <path d="M46 30 Q44 18 50 18 Q52 22 53 34 Z" fill="#6a4220"/>
+        <path d="M74 30 Q76 18 70 18 Q68 22 67 34 Z" fill="#6a4220"/>
+        <!-- eyes -->
+        <ellipse cx="50" cy="58" rx="3.5" ry="4.2" fill="#181818"/>
+        <ellipse cx="70" cy="58" rx="3.5" ry="4.2" fill="#181818"/>
+        <circle cx="51" cy="56.4" r="1.3" fill="#fff"/>
+        <circle cx="71" cy="56.4" r="1.3" fill="#fff"/>
+        <!-- blush -->
+        <circle cx="40" cy="70" r="5" fill="url(#poro-blush)"/>
+        <circle cx="80" cy="70" r="5" fill="url(#poro-blush)"/>
+        <!-- mouth + tongue -->
+        <path d="M54 72 Q60 78 66 72" stroke="#3a2417" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="60" cy="75.5" rx="3.2" ry="1.8" fill="#ff89a0"/>
+      </svg>
+      <div class="poro-zzz" aria-hidden="true">Z<span>Z</span></div>
+    </div>
+    <button class="poro-snack" id="poroSnack" type="button" aria-label="Feed the Poro a cookie">🍪</button>
+    <div class="poro-floats" id="poroFloats" aria-hidden="true"></div>
+  </div>
+  <div class="poro-meter" aria-label="Poro happiness">
+    <span class="ph-heart" data-i="0">♥</span>
+    <span class="ph-heart" data-i="1">♥</span>
+    <span class="ph-heart" data-i="2">♥</span>
+    <span class="ph-heart" data-i="3">♥</span>
+    <span class="ph-heart" data-i="4">♥</span>
+  </div>
+  <div class="poro-cta">Click to Feed</div>
+</aside>
+
 <script>
 /* INTRO */
 (function(){
@@ -91143,6 +91320,102 @@ setTimeout(()=>intro.remove(),2000);
 document.getElementById('introCta').addEventListener('click',dismiss);
 intro.addEventListener('click',dismiss);
 intro.addEventListener('touchstart',dismiss,{passive:true});
+})();
+
+/* Feed-the-Poro mini-game — bottom-left fixed widget */
+(function(){
+  const pet = document.getElementById('poroPet');
+  if (!pet) return;
+  const body = document.getElementById('poroBody');
+  const snack = document.getElementById('poroSnack');
+  const bubble = document.getElementById('poroBubble');
+  const floats = document.getElementById('poroFloats');
+  const hearts = pet.querySelectorAll('.ph-heart');
+  const MAX = 5;
+  let happy = 3;
+  let snackResetT = null;
+  let chompT = null;
+  let lastFeed = 0;
+  const PHRASES = ['Yum!','Pawsome!','More!','♥ ♥','Hehe!','So good!','Mmm!','Squee!','✨'];
+  const IDLE_CHIRPS = ['Hi!','Mmf...','Snax?','♥','Hello~','...zzz?'];
+  function render(){
+    hearts.forEach((h, i) => h.classList.toggle('lit', i < happy));
+    body.classList.toggle('sad', happy === 0);
+    body.classList.toggle('happy', happy === MAX);
+  }
+  function bubbleShow(text){
+    bubble.textContent = text;
+    bubble.classList.add('show');
+    clearTimeout(bubble._t);
+    bubble._t = setTimeout(() => bubble.classList.remove('show'), 1300);
+  }
+  function dropHeart(sparkle){
+    const heart = document.createElement('div');
+    heart.className = 'ph-float' + (sparkle ? ' sparkle' : '');
+    heart.textContent = sparkle ? '✨' : '♥';
+    heart.style.left = (28 + Math.random() * 44) + '%';
+    heart.style.top = (38 + Math.random() * 14) + '%';
+    heart.style.fontSize = (12 + Math.random() * 8) + 'px';
+    floats.appendChild(heart);
+    setTimeout(() => heart.remove(), 1500);
+  }
+  function feed(e){
+    if (e) e.stopPropagation();
+    const now = Date.now();
+    if (now - lastFeed < 380) return; // debounce spamming
+    lastFeed = now;
+    if (happy < MAX) happy++;
+    render();
+    snack.classList.add('feeding');
+    clearTimeout(snackResetT);
+    snackResetT = setTimeout(() => snack.classList.remove('feeding'), 560);
+    body.classList.remove('eating');
+    void body.offsetWidth;
+    body.classList.add('eating');
+    clearTimeout(chompT);
+    chompT = setTimeout(() => body.classList.remove('eating'), 650);
+    bubbleShow(PHRASES[Math.floor(Math.random() * PHRASES.length)]);
+    dropHeart(happy === MAX);
+    setTimeout(() => dropHeart(happy === MAX), 110);
+    setTimeout(() => dropHeart(happy === MAX), 240);
+  }
+  pet.addEventListener('click', feed);
+  snack.addEventListener('click', feed);
+  setInterval(() => {
+    if (happy > 0 && !document.hidden) happy--;
+    render();
+  }, 30000);
+  function idleChirp(){
+    if (!document.hidden && happy > 0 && Math.random() < 0.6){
+      bubbleShow(IDLE_CHIRPS[Math.floor(Math.random() * IDLE_CHIRPS.length)]);
+    }
+    setTimeout(idleChirp, 14000 + Math.random() * 10000);
+  }
+  setTimeout(idleChirp, 6000);
+  render();
+})();
+
+/* Scroll progress bar — track scroll % across page */
+(function(){
+  const bar = document.getElementById('spBar');
+  const pct = document.getElementById('spPct');
+  if (!bar) return;
+  let ticking = false;
+  function update(){
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0) return;
+    const r = Math.min(1, Math.max(0, window.scrollY / max));
+    const p = Math.round(r * 100);
+    bar.style.width = p + '%';
+    bar.classList.toggle('lit', p > 1);
+    if (pct) pct.textContent = p + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
 })();
 
 /* Background Particles */
