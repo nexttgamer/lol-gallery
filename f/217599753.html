@@ -921,7 +921,7 @@ body.entered .hero-impact{opacity:1}
   <div class="hero-grid"></div>
   <div class="hero-impact"></div>
   <div class="hero-aura"></div>
-  <div class="hero-char-wrap"><img class="hero-char" src="./fortnite-assets/heroes/hero-travis-scott.png" alt="Featured" referrerpolicy="no-referrer" crossorigin="anonymous"></div>
+  <div class="hero-char-wrap"><img class="hero-char" src="https://fortnite-api.com/images/cosmetics/br/cid_084_athena_commando_m_assassin/icon.png" alt="Featured" referrerpolicy="no-referrer" crossorigin="anonymous"></div>
 
   <div class="hero-content">
     <div class="hero-ribbon">MYTHIC LOCKER UNLOCKED</div>
@@ -935,7 +935,7 @@ body.entered .hero-impact{opacity:1}
       <div class="hero-meta-chip"><span class="num">67</span><span class="lbl">WINS</span></div>
     </div>
     <div class="hero-cta-row">
-      <a class="cta-primary" href="https://www.eldorado.gg/fortnite-accounts-for-sale/oa/9710b0d9-d240-4232-01f2-08deadf1aba1" target="_blank" rel="noopener">
+      <a class="cta-primary" href="https://www.eldorado.gg/u/nexttgamer" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
         <span>BUY ON ELDORADO</span>
       </a>
@@ -963,7 +963,9 @@ body.entered .hero-impact{opacity:1}
     <div class="loot-card" data-c="gold"><span class="icon">🎫</span><div class="val" data-count="1">0</div><div class="lbl">BP TIER</div></div>
   </div>
   <div class="rarity-row" id="rarityRow">
-    <div class="rarity-pill" style="--rc:#B847FF"><span class="dot"></span>EPIC <span class="num">0</span></div>
+    <div class="rarity-pill" style="--rc:#FF8500"><span class="dot"></span>LEGENDARY <span class="num">11</span></div>
+    <div class="rarity-pill" style="--rc:#B847FF"><span class="dot"></span>EPIC <span class="num">7</span></div>
+    <div class="rarity-pill" style="--rc:#41A3FF"><span class="dot"></span>RARE <span class="num">1</span></div>
   </div>
 </section>
 
@@ -974,7 +976,7 @@ body.entered .hero-impact{opacity:1}
     <div class="eyebrow">◆ THE LOCKER ◆</div>
     <h2>SKIN <span class="gradient">VAULT</span></h2>
     <div class="ornament"><div class="line"></div><div class="dia"></div><div class="line"></div></div>
-    <div class="count">19 OUTFITS · TOP 0 SHOWN</div>
+    <div class="count">19 OUTFITS · ALL SHOWN</div>
   </div>
 
   <div class="controls">
@@ -1005,7 +1007,7 @@ body.entered .hero-impact{opacity:1}
     <div class="eyebrow">◆ SWING & SLAM ◆</div>
     <h2>HARVESTING <span class="gradient">TOOLS</span></h2>
     <div class="ornament"><div class="line"></div><div class="dia"></div><div class="line"></div></div>
-    <div class="count">27 PICKAXES · TOP 0 SHOWN</div>
+    <div class="count">27 PICKAXES · ALL SHOWN</div>
   </div>
   <div class="tool-grid" id="toolGrid"></div>
 </section>
@@ -1022,11 +1024,23 @@ body.entered .hero-impact{opacity:1}
   <div class="emote-grid" id="emoteGrid"></div>
 </section>
 
+<!-- ═══ GLIDERS ═══ -->
+<section class="section" id="gliders">
+  <div class="section-head">
+    <div class="drop-tag" style="--co-from:#1FCFCB;--co-to:#41A3FF">SOAR HIGH</div>
+    <div class="eyebrow">◆ TAKE FLIGHT ◆</div>
+    <h2>GLIDER <span class="gradient">HANGAR</span></h2>
+    <div class="ornament"><div class="line"></div><div class="dia"></div><div class="line"></div></div>
+    <div class="count">31 GLIDERS · ALL SHOWN</div>
+  </div>
+  <div class="tool-grid" id="gliderGrid"></div>
+</section>
+
 <!-- ═══ FINAL CTA ═══ -->
 <section class="final-cta" id="finalCta">
   <h2>READY TO<br>DROP IN?</h2>
   <p class="sub">DELIVERY IN 20 MIN · VERIFIED BEFORE LISTING</p>
-  <a class="cta-primary" href="https://www.eldorado.gg/fortnite-accounts-for-sale/oa/9710b0d9-d240-4232-01f2-08deadf1aba1" target="_blank" rel="noopener">
+  <a class="cta-primary" href="https://www.eldorado.gg/u/nexttgamer" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
     <span>CLAIM ON ELDORADO</span>
   </a>
@@ -1052,9 +1066,10 @@ body.entered .hero-impact{opacity:1}
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-const skins = [];
-const pickaxes = [];
-const emotes = [];
+const skins = [{"name":"The Reaper","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_084_athena_commando_m_assassin/icon.png"},{"name":"Royale Knight","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_033_athena_commando_f_medieval/icon.png"},{"name":"Blue Squire","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_032_athena_commando_m_medieval/icon.png"},{"name":"Havoc","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_089_athena_commando_m_retrogrey/icon.png"},{"name":"Rose Team Leader","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_096_athena_commando_f_founder/icon.png"},{"name":"Elite Agent","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_083_athena_commando_f_tactical/icon.png"},{"name":"Warpaint","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_095_athena_commando_m_founder/icon.png"},{"name":"Sub Commander","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_085_athena_commando_m_twitch/icon.png"},{"name":"Trailblazer","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_114_athena_commando_f_tacticalwoodland/icon.png"},{"name":"Dark Voyager","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_088_athena_commando_m_spaceblack/icon.png"},{"name":"Drift","rarity":"legendary","img":"https://fortnite-api.com/images/cosmetics/br/cid_161_athena_commando_m_drift/icon.png"},{"name":"Redline","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/cid_162_athena_commando_f_streetracer/icon.png"},{"name":"Moonwalker","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/cid_081_athena_commando_f_space/icon.png"},{"name":"Huntress","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/cid_163_athena_commando_f_viking/icon.png"},{"name":"Mission Specialist","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/cid_080_athena_commando_m_space/icon.png"},{"name":"Rust Lord","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/cid_082_athena_commando_m_scavenger/icon.png"},{"name":"Oscar","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_bengalbasher_suit/icon.png"},{"name":"Hope","rarity":"epic","img":"https://fortnite-api.com/images/cosmetics/br/character_voidredemption_rebel/icon.png"},{"name":"Holiday Boxy","rarity":"rare","img":"https://fortnite-api.com/images/cosmetics/br/character_cardboardcrew_holiday/icon.png"}];
+const pickaxes = [{"name":"Ol' Woody","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_stw001_tier_1/icon.png"},{"name":"EVA","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_028_space/icon.png"},{"name":"Rift Edge","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_068_drift/icon.png"},{"name":"Trusty No. 2","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_029_assassin/icon.png"},{"name":"Turbulent Blade","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_cubicvice/icon.png"},{"name":"Pulse Axe","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_012_district/icon.png"},{"name":"Mercurial","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_liquidmetal_mic/icon.png"},{"name":"Nanner Bashers","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_lilsplit/icon.png"},{"name":"Balloon Axe","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_073_balloon/icon.png"},{"name":"Night Kama","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_ironlilac/icon.png"},{"name":"Josie","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_506_flapjackwranglermale/icon.png"},{"name":"Breathless Blades","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_547_streetcuddlesmale1h/icon.png"},{"name":"Tenderizer","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_044_tacticalurbanhammer/icon.png"},{"name":"Secret Scimitars","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_voidredemption/icon.png"},{"name":"Sawtooth","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_027_scavenger/icon.png"},{"name":"Lug Axe","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_071_streetracer/icon.png"},{"name":"Flux Silvera","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_liquidmetal_guitar/icon.png"},{"name":"Crimson Polestar","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_cyberfureboot32/icon.png"},{"name":"Instigator","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_039_tacticalblack/icon.png"},{"name":"Guiding Glow","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_102_redriding/icon.png"},{"name":"Premiere Poms","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_raiderpinksherbert/icon.png"},{"name":"Basic Basher","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_stw007_basic/icon.png"},{"name":"Reboot'd Breaker","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_skullpunkblade/icon.png"},{"name":"Poacher's Regrets","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_bengalbasher/icon.png"},{"name":"Mean Streak ","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_237_warpaint/icon.png"},{"name":"Rose Glow","img":"https://fortnite-api.com/images/cosmetics/br/pickaxe_id_153_roseleader/icon.png"},{"name":"Default Pickaxe","img":"https://fortnite-api.com/images/cosmetics/br/defaultpickaxe/icon.png"}];
+const emotes = [{"name":"Take The L","img":"https://fortnite-api.com/images/cosmetics/br/eid_takethel/icon.png"},{"name":"Freestylin'","img":"https://fortnite-api.com/images/cosmetics/br/eid_hiphop01/icon.png"},{"name":"The Robot","img":"https://fortnite-api.com/images/cosmetics/br/eid_robot/icon.png"},{"name":"Reanimated","img":"https://fortnite-api.com/images/cosmetics/br/eid_zombie/icon.png"},{"name":"I'm a Mystery","img":"https://fortnite-api.com/images/cosmetics/br/eid_voidredemption/icon.png"},{"name":"Crowning Achievement","img":"https://fortnite-api.com/images/cosmetics/br/eid_coronet/icon.png"},{"name":"Boogie Down","img":"https://fortnite-api.com/images/cosmetics/br/eid_boogiedown/icon.png"},{"name":"Best Mates","img":"https://fortnite-api.com/images/cosmetics/br/eid_bestmates/icon.png"},{"name":"Jabba Switchway","img":"https://fortnite-api.com/images/cosmetics/br/eid_januarybop/icon.png"},{"name":"You're Awesome","img":"https://fortnite-api.com/images/cosmetics/br/eid_youreawesome/icon.png"},{"name":"Infinite Dab","img":"https://fortnite-api.com/images/cosmetics/br/eid_infinitedab/icon.png"},{"name":"Calculated","img":"https://fortnite-api.com/images/cosmetics/br/eid_calculated/icon.png"},{"name":"Pony Up","img":"https://fortnite-api.com/images/cosmetics/br/eid_ridetheponytwo/icon.png"},{"name":"Ride The Pony","img":"https://fortnite-api.com/images/cosmetics/br/eid_ridethepony_athena/icon.png"},{"name":"Slow Clap","img":"https://fortnite-api.com/images/cosmetics/br/eid_slowclap/icon.png"},{"name":"Gentleman's Dab","img":"https://fortnite-api.com/images/cosmetics/br/eid_stagebow/icon.png"},{"name":"Call me","img":"https://fortnite-api.com/images/cosmetics/br/eid_callme/icon.png"},{"name":"Battle Call","img":"https://fortnite-api.com/images/cosmetics/br/eid_vikinghorn/icon.png"},{"name":"Jubilation","img":"https://fortnite-api.com/images/cosmetics/br/eid_celebration/icon.png"},{"name":"Salute","img":"https://fortnite-api.com/images/cosmetics/br/eid_salute/icon.png"},{"name":"Regal Wave","img":"https://fortnite-api.com/images/cosmetics/br/eid_regalwave/icon.png"},{"name":"Bloomin' Bouquet","img":"https://fortnite-api.com/images/cosmetics/br/eid_bouquet/icon.png"},{"name":"Wave","img":"https://fortnite-api.com/images/cosmetics/br/eid_wave/icon.png"},{"name":"Red Card","img":"https://fortnite-api.com/images/cosmetics/br/eid_redcard/icon.png"},{"name":"Dance Moves","img":"https://fortnite-api.com/images/cosmetics/br/eid_dancemoves/icon.png"},{"name":"Stand Surfer","img":"https://fortnite-api.com/images/cosmetics/br/eid_mic_monkeystaff/icon.png"}];
+const gliders = [{"name":"Time Brella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_season_27/icon.png"},{"name":"Slipstream","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_018_twitch/icon.png"},{"name":"Get Down!","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_004_disco/icon.png"},{"name":"Cliffside Soarer","img":"https://fortnite-api.com/images/cosmetics/br/glider_slicevine/icon.png"},{"name":"Conquest","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_048_viking/icon.png"},{"name":"Scarlet Longboard","img":"https://fortnite-api.com/images/cosmetics/br/glider_bariumreboot32/icon.png"},{"name":"Rainbow Rider","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_015_brite/icon.png"},{"name":"Ratacat Roamer","img":"https://fortnite-api.com/images/cosmetics/br/glider_voidredemption/icon.png"},{"name":"Flapjack Flyer","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_255_flapjackwranglermale/icon.png"},{"name":"Cruiser","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_050_streetracercobra/icon.png"},{"name":"Perfect Pivot","img":"https://fortnite-api.com/images/cosmetics/br/glider_skullbrite_cotton/icon.png"},{"name":"Downshift","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_055_streetracerblack/icon.png"},{"name":"Rebel Brella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_season_28/icon.png"},{"name":"Crossfire","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_081_cowboygunslinger/icon.png"},{"name":"Wild Streak","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_117_warpaint/icon.png"},{"name":"Rose Rider","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_161_roseleader/icon.png"},{"name":"Elite Servo","img":"https://fortnite-api.com/images/cosmetics/br/glider_modernmilitary_crisp/icon.png"},{"name":"Carbon","img":"https://fortnite-api.com/images/cosmetics/br/glider_id_016_tactical/icon.png"},{"name":"Competitor's Time Brella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_rankedremixcarrot/icon.png"},{"name":"Wet Paint","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_season_04/icon.png"},{"name":"Glider","img":"https://fortnite-api.com/images/cosmetics/br/defaultglider/icon.png"},{"name":"Webrella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_season_06/icon.png"},{"name":"The Umbrella","img":"https://fortnite-api.com/images/cosmetics/br/solo_umbrella/icon.png"},{"name":"Beach Umbrella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_season_05/icon.png"},{"name":"Founder's Umbrella","img":"https://fortnite-api.com/images/cosmetics/br/founderumbrella/icon.png"},{"name":"Tagged 'Brella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_liftaxis/icon.png"},{"name":"Snowflake","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_snowflake/icon.png"},{"name":"Founder's Glider","img":"https://fortnite-api.com/images/cosmetics/br/founderglider/icon.png"},{"name":"Paper Parasol","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_paperparasol/icon.png"},{"name":"The Rezzbrella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_blastberry_season_30/icon.png"},{"name":"Bounty 'Brella","img":"https://fortnite-api.com/images/cosmetics/br/umbrella_season_15/icon.png"}];
 
 const RARITY = {
   marvel:    { color:"#ED1E2C", label:"Marvel" },
@@ -1116,6 +1131,18 @@ function renderEmotes() {
       onclick="openLightbox('${e.img}','${e.name.replace(/'/g,'&#39;')}','EMOTE','#FF2A8E')">
       <img data-src="${e.img}" alt="${e.name}">
       <div class="emote-name">${e.name}</div>
+    </div>`).join('');
+}
+
+function renderGliders() {
+  const grid = document.getElementById('gliderGrid');
+  if (!grid) return;
+  grid.innerHTML = gliders.map((g, i) => `
+    <div class="tool-card" style="${_slamVars(i)}"
+      onclick="openLightbox('${g.img}','${g.name.replace(/'/g,'&#39;')}','GLIDER','#1FCFCB')">
+      <div class="tool-img-wrap"><img data-src="${g.img}" alt="${g.name}"></div>
+      <div class="tool-info"><div class="tool-name">${g.name}</div></div>
+      <div class="burst"></div>
     </div>`).join('');
 }
 
@@ -1328,6 +1355,7 @@ function initRevealObservers() {
   const skinCards = document.querySelectorAll('#skinGrid .skin-card');
   const toolCards = document.querySelectorAll('#toolGrid .tool-card');
   const emoteCards = document.querySelectorAll('#emoteGrid .emote-card');
+  const gliderCards = document.querySelectorAll('#gliderGrid .tool-card');
 
   const lootObs = new IntersectionObserver((entries) => {
     for (const e of entries) {
@@ -1361,6 +1389,7 @@ function initRevealObservers() {
   gridObserver(document.getElementById('skinGrid'), skinCards, 22);
   gridObserver(document.getElementById('toolGrid'), toolCards);
   gridObserver(document.getElementById('emoteGrid'), emoteCards, 30);
+  gridObserver(document.getElementById('gliderGrid'), gliderCards);
 }
 
 function shakeBody(intensity = 'sm') {
@@ -1522,6 +1551,7 @@ window.addEventListener('load', smoothBoot);
 renderSkins();
 renderTools();
 renderEmotes();
+renderGliders();
 spawnParticles();
 spawnBrightStars();
 
