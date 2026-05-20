@@ -3763,7 +3763,6 @@ const sfx = (()=>{
 
         // ─── D · SUPPRESSED — muffled "tssk" ───
         if(v === 'suppressed' || v === 'd'){
-          // lowpass-filtered noise quick decay
           const buf = c.createBuffer(1, Math.floor(c.sampleRate * 0.13), c.sampleRate);
           const data = buf.getChannelData(0);
           for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/data.length, 3);
@@ -3772,7 +3771,6 @@ const sfx = (()=>{
           filt.type = 'lowpass'; filt.frequency.value = 650; filt.Q.value = 1;
           const ng = c.createGain(); ng.gain.value = 0.30;
           src.connect(filt).connect(ng).connect(c.destination); src.start(t0);
-          // subtle low click
           const osc = c.createOscillator();
           const oscGain = c.createGain();
           osc.type = 'sine';
@@ -3783,6 +3781,81 @@ const sfx = (()=>{
           oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.13);
           osc.connect(oscGain).connect(c.destination);
           osc.start(t0); osc.stop(t0 + 0.16);
+          return;
+        }
+
+        // Helper for the rifle-family variants — one controlled crack.
+        const rifleCrack = (offset, pitchHi, pitchLo, dur, vol, noiseDur, noiseVol) => {
+          const tt = t0 + offset;
+          const osc = c.createOscillator();
+          const oscGain = c.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(pitchHi, tt);
+          osc.frequency.exponentialRampToValueAtTime(pitchLo, tt + dur);
+          oscGain.gain.value = 0.0001;
+          oscGain.gain.exponentialRampToValueAtTime(vol, tt + 0.005);
+          oscGain.gain.exponentialRampToValueAtTime(0.0001, tt + dur + 0.04);
+          osc.connect(oscGain).connect(c.destination);
+          osc.start(tt); osc.stop(tt + dur + 0.08);
+          const buf = c.createBuffer(1, Math.floor(c.sampleRate * noiseDur), c.sampleRate);
+          const data = buf.getChannelData(0);
+          for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/data.length, 2.2);
+          const src = c.createBufferSource(); src.buffer = buf;
+          const ng = c.createGain(); ng.gain.value = noiseVol;
+          src.connect(ng).connect(c.destination); src.start(tt);
+        };
+
+        // ─── E · RIFLE — Vandal/M4 style, controlled mid crack ───
+        if(v === 'rifle' || v === 'e'){
+          rifleCrack(0, 1700, 90, 0.22, 0.50, 0.16, 0.42);
+          return;
+        }
+
+        // ─── F · BURST — 3-shot rapid fire, pitch-varied ───
+        if(v === 'burst' || v === 'f'){
+          rifleCrack(0,    2100, 110, 0.14, 0.42, 0.10, 0.35);
+          rifleCrack(0.09, 1850, 100, 0.14, 0.40, 0.10, 0.33);
+          rifleCrack(0.18, 1700, 95,  0.16, 0.42, 0.11, 0.34);
+          return;
+        }
+
+        // ─── G · MAGNUM — Sheriff / Desert Eagle deep boom ───
+        if(v === 'magnum' || v === 'g'){
+          // strong sub-bass thud (60Hz)
+          const sub = c.createOscillator();
+          const subGain = c.createGain();
+          sub.type = 'sine';
+          sub.frequency.setValueAtTime(95, t0);
+          sub.frequency.exponentialRampToValueAtTime(38, t0 + 0.35);
+          subGain.gain.value = 0.0001;
+          subGain.gain.exponentialRampToValueAtTime(0.62, t0 + 0.008);
+          subGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.42);
+          sub.connect(subGain).connect(c.destination);
+          sub.start(t0); sub.stop(t0 + 0.46);
+          // mid sawtooth crack
+          const osc = c.createOscillator();
+          const oscGain = c.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(1500, t0);
+          osc.frequency.exponentialRampToValueAtTime(70, t0 + 0.32);
+          oscGain.gain.value = 0.0001;
+          oscGain.gain.exponentialRampToValueAtTime(0.52, t0 + 0.005);
+          oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.38);
+          osc.connect(oscGain).connect(c.destination);
+          osc.start(t0); osc.stop(t0 + 0.42);
+          // long noise tail
+          const buf = c.createBuffer(1, Math.floor(c.sampleRate * 0.32), c.sampleRate);
+          const data = buf.getChannelData(0);
+          for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/data.length, 1.6);
+          const src = c.createBufferSource(); src.buffer = buf;
+          const ng = c.createGain(); ng.gain.value = 0.44;
+          src.connect(ng).connect(c.destination); src.start(t0);
+          return;
+        }
+
+        // ─── H · SMG — Spectre / Stinger fast light pop ───
+        if(v === 'smg' || v === 'h'){
+          rifleCrack(0, 2600, 160, 0.10, 0.36, 0.07, 0.28);
           return;
         }
       } catch{}
