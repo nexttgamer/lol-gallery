@@ -57,26 +57,163 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
 /* All content sections sit above the atmosphere. */
 .brand-hero,.account-overview,.container,.footer{position:relative;z-index:2;}
 
-/* ═══ INTRO SCREEN ═══ */
-.intro{position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease 0.7s,visibility 0.8s ease 0.7s}
-.intro.done{opacity:0;visibility:hidden;pointer-events:none}
-.intro-inner{display:flex;flex-direction:column;align-items:center;transition:opacity 0.5s ease,transform 0.5s ease}
-.intro.done .intro-inner{opacity:0;transform:scale(0.95)}
-.intro-cta{margin-top:50px;cursor:pointer;opacity:0;transition:opacity 0.8s ease 1.6s}
-.intro.step1 .intro-cta{opacity:1}
-.intro-cta button{background:transparent;border:1px solid rgba(200,155,60,0.3);color:#c89b3c;font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:5px;padding:14px 50px;cursor:pointer;text-transform:uppercase;transition:all 0.4s;position:relative;overflow:hidden}
-.intro-cta button::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(200,155,60,0.06),transparent);transform:translateX(-100%);transition:transform 0.6s}
-.intro-cta button:hover::before{transform:translateX(100%)}
-.intro-cta button:hover{border-color:rgba(200,155,60,0.7);color:#f0e6d2;box-shadow:0 0 30px rgba(200,155,60,0.1)}
-.intro-line{width:0;height:1px;background:linear-gradient(90deg,transparent,#c89b3c,transparent);transition:width 1.5s ease;margin-bottom:30px}
-.intro.step1 .intro-line{width:200px}
-.intro-text{font-family:'Cinzel',serif;color:#c89b3c;font-size:clamp(1.5rem,4vw,2.8rem);letter-spacing:8px;opacity:0;transform:translateY(10px);transition:opacity 1s ease 0.5s,transform 1s ease 0.5s}
-.intro.step1 .intro-text{opacity:1;transform:translateY(0)}
-.intro-sub{font-family:'Inter',sans-serif;color:#3a3833;font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;opacity:0;transition:opacity 0.8s ease 1.2s}
-.intro.step1 .intro-sub{opacity:1}
-.intro-particles{position:absolute;inset:0;overflow:hidden}
-.intro-particles .ip{position:absolute;width:2px;height:2px;background:#c89b3c;border-radius:50%;opacity:0;animation:introFloat 3s ease-in-out infinite}
-@keyframes introFloat{0%{opacity:0;transform:scale(0)}50%{opacity:0.6}100%{opacity:0;transform:scale(1) translateY(-100px)}}
+/* === LOADING SCREEN — Champion-Select hybrid =============================== */
+.intro{position:fixed;inset:0;z-index:9999;background:#04070d;color:var(--lol-parchment);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:opacity 0.85s ease,visibility 0.85s ease;}
+.intro.done{opacity:0;visibility:hidden;pointer-events:none;}
+
+/* Atmospheric blurred splash bg */
+.intro-splash-bg{position:absolute;inset:-40px;background-image:var(--bg);background-size:cover;
+  background-position:center;filter:blur(48px) brightness(0.32) saturate(0.85);transform:scale(1.18);
+  z-index:0;animation:intro-bg-drift 18s ease-in-out infinite alternate;}
+@keyframes intro-bg-drift{0%{transform:scale(1.18) translate(0,0)}100%{transform:scale(1.22) translate(-1.5%,1.5%)}}
+.intro-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(4,7,13,0.55) 65%,rgba(4,7,13,0.96) 100%),
+             linear-gradient(180deg,rgba(4,7,13,0.7) 0%,transparent 25%,transparent 70%,rgba(4,7,13,0.8) 100%);}
+
+.intro-rune{position:absolute;top:50%;left:50%;width:min(95vh,950px);aspect-ratio:1;
+  transform:translate(-50%,-50%);pointer-events:none;opacity:0.09;z-index:1;
+  animation:intro-rune-spin 90s linear infinite;color:var(--lol-gold);}
+@keyframes intro-rune-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.intro-rune svg{width:100%;height:100%;display:block;}
+
+/* Corner filigree brackets */
+.intro-corner{position:absolute;width:60px;height:60px;color:var(--lol-gold);z-index:6;pointer-events:none;
+  opacity:0;animation:intro-corner-in 0.9s ease 0.3s forwards;}
+.intro-corner svg{width:100%;height:100%;display:block;
+  filter:drop-shadow(0 0 8px rgba(200,170,110,0.5));}
+.intro-corner.tl{top:24px;left:24px;}
+.intro-corner.tr{top:24px;right:24px;transform:scaleX(-1);}
+.intro-corner.bl{bottom:24px;left:24px;transform:scaleY(-1);}
+.intro-corner.br{bottom:24px;right:24px;transform:scale(-1,-1);}
+@keyframes intro-corner-in{from{opacity:0;transform:scale(0.5)}to{opacity:0.95;}}
+.intro-corner.tr{animation-name:intro-corner-in-tr;}
+.intro-corner.bl{animation-name:intro-corner-in-bl;}
+.intro-corner.br{animation-name:intro-corner-in-br;}
+@keyframes intro-corner-in-tr{from{opacity:0;transform:scale(0.5) scaleX(-1)}to{opacity:0.95;transform:scaleX(-1)}}
+@keyframes intro-corner-in-bl{from{opacity:0;transform:scale(0.5) scaleY(-1)}to{opacity:0.95;transform:scaleY(-1)}}
+@keyframes intro-corner-in-br{from{opacity:0;transform:scale(0.5) scale(-1,-1)}to{opacity:0.95;transform:scale(-1,-1)}}
+
+/* Top brand band */
+.intro-band-top{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;
+  padding:38px clamp(80px,8vw,140px) 18px;
+  opacity:0;transform:translateY(-12px);animation:intro-band-in 0.7s ease 0.35s forwards;}
+@keyframes intro-band-in{to{opacity:1;transform:translateY(0)}}
+.intro-mark{font-family:'Marcellus SC',serif;font-size:11px;letter-spacing:0.5em;color:var(--lol-gold);
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:14px;}
+.intro-mark em{font-style:normal;color:var(--lol-gold-bright);}
+.intro-mark .ibt-pip,.intro-summoner .is-pip{width:5px;height:5px;background:var(--lol-gold);
+  transform:rotate(45deg);box-shadow:0 0 8px var(--lol-gold);display:inline-block;}
+.intro-summoner{font-family:'Cormorant SC',serif;font-size:12.5px;letter-spacing:0.22em;
+  color:var(--lol-parchment);display:inline-flex;align-items:center;gap:10px;text-transform:uppercase;}
+.intro-summoner em{font-style:normal;color:var(--lol-gold-bright);font-weight:600;}
+
+/* Center: wordmark + portraits */
+.intro-center{position:relative;z-index:4;flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:0 24px;gap:18px;text-align:center;}
+.intro-eyebrow{font-family:'Marcellus SC',serif;font-size:11px;letter-spacing:0.55em;color:var(--lol-gold);
+  text-transform:uppercase;opacity:0;transform:translateY(8px);
+  animation:intro-fade-up 0.7s ease 0.55s forwards;}
+@keyframes intro-fade-up{to{opacity:1;transform:translateY(0)}}
+.intro-name{font-family:'Cinzel Decorative',serif;font-weight:900;
+  font-size:clamp(2.6rem,6vw,5.6rem);letter-spacing:0.14em;line-height:1;
+  background:linear-gradient(180deg,#fff4d0 0%,#f0e6d2 25%,#c8aa6e 65%,#785a28 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,0.55)) drop-shadow(0 0 60px rgba(200,170,110,0.35));
+  margin:0;opacity:0;transform:translateY(14px) scale(0.94);
+  animation:intro-name-in 1.1s cubic-bezier(0.18,1.2,0.4,1) 0.7s forwards;}
+@keyframes intro-name-in{to{opacity:1;transform:translateY(0) scale(1)}}
+.intro-stars{font-family:'Cinzel Decorative',serif;font-size:18px;letter-spacing:18px;padding-left:18px;
+  color:var(--lol-gold-bright);text-shadow:0 0 14px rgba(200,170,110,0.85);
+  opacity:0;animation:intro-fade-up 0.8s ease 1.05s forwards;}
+
+/* Champion-select-style portrait strip */
+.intro-portraits{display:flex;justify-content:center;gap:clamp(10px,1.4vw,22px);margin-top:24px;
+  flex-wrap:nowrap;max-width:100%;}
+.intro-portrait{position:relative;width:clamp(96px,12vw,160px);aspect-ratio:9/13;overflow:hidden;
+  background:#000;border:1px solid var(--rar-color,var(--lol-gold));
+  box-shadow:0 24px 50px -16px rgba(0,0,0,0.7),
+             0 0 0 1px rgba(0,0,0,0.5) inset,
+             0 0 30px -8px color-mix(in srgb,var(--rar-color,var(--lol-gold)) 35%,transparent);
+  opacity:0;transform:translateY(40px) scale(0.92);
+  animation:intro-portrait-in 0.95s cubic-bezier(0.18,1.1,0.4,1) calc(0.85s + var(--d,0ms)) forwards;}
+@keyframes intro-portrait-in{to{opacity:1;transform:translateY(0) scale(1)}}
+.intro-portrait::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;z-index:4;
+  background:linear-gradient(90deg,transparent,var(--rar-color,var(--lol-gold)) 50%,transparent);}
+.intro-portrait::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;z-index:4;
+  background:linear-gradient(90deg,transparent,var(--rar-color,var(--lol-gold)) 50%,transparent);
+  opacity:0.6;}
+.intro-portrait .ip-art{position:absolute;inset:0;background-image:var(--bg);
+  background-size:cover;background-position:38% center;filter:contrast(1.05) saturate(1.1);
+  transform:scale(1.05);transition:transform 6s ease;}
+.intro-portrait:hover .ip-art{transform:scale(1.12);}
+.intro-portrait .ip-fade{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(4,7,13,0) 0%,rgba(4,7,13,0) 40%,rgba(4,7,13,0.7) 78%,rgba(4,7,13,0.97) 100%);}
+.intro-portrait .ip-corner{position:absolute;width:30px;height:30px;color:var(--rar-color,var(--lol-gold));
+  pointer-events:none;opacity:0.95;z-index:5;}
+.intro-portrait .ip-corner.tl{top:6px;left:6px;}
+.intro-portrait .ip-corner.br{bottom:6px;right:6px;transform:scale(-1,-1);}
+.intro-portrait .ip-corner svg{width:100%;height:100%;display:block;}
+.intro-portrait .ip-meta{position:absolute;left:10px;right:10px;bottom:10px;z-index:6;}
+.intro-portrait .ip-rarity{font-family:'Marcellus SC',serif;font-size:8.5px;letter-spacing:0.32em;
+  padding:2px 7px;border:1px solid var(--rar-color,var(--lol-gold));color:var(--rar-color,var(--lol-gold));
+  background:rgba(4,7,13,0.65);backdrop-filter:blur(3px);display:inline-block;margin-bottom:6px;}
+.intro-portrait .ip-name{font-family:'Cormorant SC',serif;font-weight:600;font-size:clamp(0.7rem,0.9vw,0.95rem);
+  color:var(--lol-gold-bright);letter-spacing:0.06em;line-height:1.05;text-shadow:0 2px 10px rgba(0,0,0,0.95);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* Loading bar + status + CTA */
+.intro-loader{position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;gap:14px;
+  padding:18px 24px 56px;}
+.intro-status{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13.5px;letter-spacing:0.05em;
+  color:rgba(230,218,184,0.78);transition:opacity 0.3s,transform 0.3s;text-align:center;min-height:1.4em;}
+.intro-status.swap{opacity:0;transform:translateY(4px);}
+.intro-bar-wrap{position:relative;display:flex;align-items:center;gap:14px;width:min(540px,80vw);
+  opacity:0;animation:intro-fade-up 0.6s ease 1.2s forwards;}
+.intro-bar-wrap .ibw-pip{width:10px;height:10px;background:radial-gradient(circle,var(--lol-gold-bright),var(--lol-gold) 60%,transparent);
+  transform:rotate(45deg);box-shadow:0 0 8px var(--lol-gold);flex:0 0 10px;}
+.intro-bar{flex:1;height:4px;background:rgba(20,28,48,0.7);position:relative;
+  border:1px solid rgba(200,170,110,0.3);overflow:hidden;}
+.intro-bar-fill{position:absolute;top:0;left:0;height:100%;width:0%;
+  background:linear-gradient(90deg,#5e3e15 0%,#c8aa6e 45%,#fff4d0 60%,#c8aa6e 75%,#785a28 100%);
+  box-shadow:0 0 14px rgba(200,170,110,0.7),0 0 4px var(--lol-gold-bright);
+  transition:width 0.18s ease-out;}
+.intro-pct{position:absolute;right:-46px;top:50%;transform:translateY(-50%);
+  font-family:'Marcellus SC',serif;font-size:10px;letter-spacing:0.36em;color:var(--lol-gold);
+  text-transform:uppercase;min-width:38px;text-align:right;}
+.intro-cta{margin-top:4px;opacity:0;transform:scale(0.85) translateY(6px);
+  transition:opacity 0.45s ease,transform 0.55s cubic-bezier(0.2,1.2,0.4,1);pointer-events:none;}
+.intro.ready .intro-cta{opacity:1;transform:scale(1) translateY(0);pointer-events:auto;}
+.intro-cta button{position:relative;display:inline-flex;align-items:center;gap:14px;padding:16px 42px;
+  font-family:'Marcellus SC',serif;font-size:13px;letter-spacing:0.55em;color:var(--lol-ink);text-transform:uppercase;
+  background:linear-gradient(180deg,#fff4d0 0%,#c8aa6e 55%,#785a28 100%);
+  border:1px solid var(--lol-gold);cursor:pointer;
+  box-shadow:0 18px 50px -10px rgba(200,170,110,0.6),inset 0 0 0 1px rgba(255,255,255,0.18);
+  transition:transform 0.35s,letter-spacing 0.35s,box-shadow 0.35s;animation:intro-cta-pulse 2.2s ease-in-out infinite;}
+.intro-cta button::before,.intro-cta button::after{content:'';width:6px;height:6px;background:var(--lol-ink);transform:rotate(45deg);}
+.intro-cta button:hover{transform:translateY(-2px);letter-spacing:0.7em;
+  box-shadow:0 24px 70px -10px rgba(200,170,110,0.8),inset 0 0 0 1px rgba(255,255,255,0.3);}
+@keyframes intro-cta-pulse{0%,100%{box-shadow:0 18px 50px -10px rgba(200,170,110,0.6),inset 0 0 0 1px rgba(255,255,255,0.18)}
+  50%{box-shadow:0 22px 70px -8px rgba(200,170,110,0.9),inset 0 0 0 1px rgba(255,255,255,0.3)}}
+.intro-cta .ic-arrow{display:inline-block;animation:intro-arrow-bob 1.5s ease-in-out infinite;}
+@keyframes intro-arrow-bob{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+
+@media (max-width:760px){
+  .intro-band-top{padding:24px 24px 12px;flex-direction:column;gap:8px;align-items:flex-start;}
+  .intro-name{font-size:clamp(2rem,9vw,3.2rem);letter-spacing:0.1em;}
+  .intro-portraits{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .intro-portrait:nth-child(4),.intro-portrait:nth-child(5){display:none;}
+  .intro-corner{width:38px;height:38px;}
+  .intro-corner.tl,.intro-corner.tr{top:12px;}
+  .intro-corner.bl,.intro-corner.br{bottom:12px;}
+  .intro-corner.tl,.intro-corner.bl{left:12px;}
+  .intro-corner.tr,.intro-corner.br{right:12px;}
+  .intro-loader{padding:14px 18px 32px;}
+  .intro-bar-wrap{width:90vw;}
+  .intro-pct{right:-40px;font-size:8.5px;}
+  .intro-cta button{font-size:11px;padding:12px 24px;letter-spacing:0.42em;}
+}
 
 /* ═══ Animated Background ═══ */
 .bg-anim{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
@@ -108,16 +245,36 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
   animation:poro-snow 5s linear infinite;display:inline-block;}
 @keyframes poro-snow{to{transform:rotate(360deg)}}
 
-.poro-stage{position:relative;width:100%;height:96px;
-  display:flex;align-items:center;justify-content:center;overflow:visible;}
-.poro-body{width:88px;height:88px;position:relative;transform-origin:center bottom;
-  animation:poro-idle 3.4s ease-in-out infinite;}
+.poro-stage{position:relative;width:100%;height:108px;
+  display:flex;align-items:center;justify-content:center;overflow:visible;
+  perspective:520px;perspective-origin:50% 35%;}
+.poro-body{width:96px;height:104px;position:relative;transform-origin:center bottom;
+  transform-style:preserve-3d;
+  animation:poro-idle-3d 4.2s ease-in-out infinite;}
+.poro-pet:hover .poro-body{animation-play-state:paused;
+  transform:rotateX(-4deg) rotateY(7deg) translateY(-1px);}
 .poro-body.eating{animation:poro-chomp 0.6s ease both;}
 .poro-body.happy{animation:poro-bounce 0.75s ease-in-out infinite;}
+.poro-body.celebrating{animation:poro-celebrate 0.6s ease-in-out 1 forwards;}
+.poro-body.leaving{animation:poro-leave 0.85s cubic-bezier(0.4,0,0.6,1) forwards;}
+.poro-body.dissolving{animation:poro-dissolve 0.42s ease-in forwards;}
+.poro-body.returning{animation:poro-return 0.6s cubic-bezier(0.18,1.3,0.45,1) forwards;}
+.poro-body.gone{opacity:0;pointer-events:none;}
 .poro-body.sad{filter:saturate(0.25) brightness(0.55);animation:none;}
-@keyframes poro-idle{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.018)}}
-@keyframes poro-chomp{0%,100%{transform:scale(1) rotate(0)}30%{transform:scale(1.12) rotate(-5deg)}60%{transform:scale(1.04) rotate(4deg)}}
-@keyframes poro-bounce{0%,100%{transform:translateY(0) rotate(-2.5deg) scale(1)}50%{transform:translateY(-7px) rotate(2.5deg) scale(1.04)}}
+@keyframes poro-idle-3d{
+  0%,100%{transform:rotateX(0) rotateY(-3deg) translateY(0)}
+  50%{transform:rotateX(-2deg) rotateY(3deg) translateY(-2px)}}
+@keyframes poro-chomp{0%,100%{transform:rotateY(0) scale(1) rotate(0)}30%{transform:rotateY(-5deg) scale(1.12) rotate(-5deg)}60%{transform:rotateY(5deg) scale(1.04) rotate(4deg)}}
+@keyframes poro-bounce{0%,100%{transform:translateY(0) rotateY(-3deg) rotate(-2.5deg) scale(1)}50%{transform:translateY(-7px) rotateY(3deg) rotate(2.5deg) scale(1.04)}}
+@keyframes poro-celebrate{0%{transform:rotateY(0) scale(1)}100%{transform:rotateY(360deg) scale(1.15)}}
+@keyframes poro-leave{0%{transform:translateY(0) scale(1);opacity:1}
+  60%{transform:translateY(-22px) scale(0.78);opacity:0.85}
+  100%{transform:translateY(-40px) scale(0.6);opacity:0.6}}
+@keyframes poro-dissolve{0%{transform:translateY(-40px) scale(0.6);opacity:0.6;filter:brightness(2.5)}
+  100%{transform:translateY(-60px) scale(0);opacity:0;filter:brightness(4)}}
+@keyframes poro-return{0%{transform:translateY(-30px) scale(0) rotate(180deg);opacity:0;filter:brightness(2.6)}
+  60%{transform:translateY(-8px) scale(1.15) rotate(20deg);opacity:1;filter:brightness(1.2)}
+  100%{transform:translateY(0) scale(1) rotate(0);opacity:1;filter:brightness(1)}}
 .poro-body svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));}
 .poro-zzz{position:absolute;top:-2px;right:6px;font-family:'Cinzel Decorative',serif;font-size:14px;
   color:rgba(180,200,220,0.78);font-weight:900;opacity:0;}
@@ -143,6 +300,56 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
 .poro-bubble::after{content:'';position:absolute;left:50%;bottom:-6px;width:0;height:0;
   border:6px solid transparent;border-top-color:var(--lol-gold);transform:translateX(-50%);}
 .poro-bubble.show{opacity:1;transform:translate(-50%,-100%) scale(1);}
+
+/* ── Teleport beam: vertical gold light shaft ── */
+.poro-beam{position:absolute;left:50%;bottom:6px;width:16px;height:100%;
+  background:linear-gradient(180deg,rgba(255,244,208,0) 0%,rgba(255,244,208,0.95) 18%,rgba(200,170,110,0.9) 65%,rgba(200,170,110,0) 100%);
+  transform:translateX(-50%) scaleY(0);transform-origin:bottom center;
+  opacity:0;pointer-events:none;border-radius:50% 50% 4px 4px / 60% 60% 4px 4px;
+  filter:blur(0.4px) drop-shadow(0 0 14px rgba(255,229,179,0.9)) drop-shadow(0 0 28px rgba(200,170,110,0.7));}
+.poro-beam.lit{opacity:1;scaleY:1;animation:poro-beam-rise 0.85s cubic-bezier(0.2,0.7,0.3,1) forwards;}
+.poro-beam.fading{animation:poro-beam-fade 0.7s ease-in forwards;}
+@keyframes poro-beam-rise{0%{transform:translateX(-50%) scaleY(0);opacity:0}
+  40%{opacity:1;transform:translateX(-50%) scaleY(1.2) scaleX(1.2)}
+  100%{opacity:0.95;transform:translateX(-50%) scaleY(1.2) scaleX(1)}}
+@keyframes poro-beam-fade{0%{opacity:0.95;transform:translateX(-50%) scaleY(1.2)}
+  100%{opacity:0;transform:translateX(-50%) scaleY(0) scaleX(0.4)}}
+
+/* ── White flash overlay when Poro dissolves ── */
+.poro-flash{position:absolute;inset:-20px;
+  background:radial-gradient(circle at 50% 45%,rgba(255,244,208,0.95) 0%,rgba(255,229,179,0.4) 30%,transparent 65%);
+  opacity:0;pointer-events:none;mix-blend-mode:screen;}
+.poro-flash.burst{animation:poro-flash-burst 0.42s ease-out forwards;}
+@keyframes poro-flash-burst{0%{opacity:0;transform:scale(0.5)}
+  18%{opacity:1;transform:scale(1.1)}
+  100%{opacity:0;transform:scale(1.4)}}
+
+/* ── 12 sparkles burst outward (and converge for return) ── */
+.poro-sparkles{position:absolute;inset:0;pointer-events:none;}
+.poro-sparkles .spk{position:absolute;left:50%;top:50%;
+  font-size:13px;color:var(--lol-gold-bright);font-family:'Cinzel Decorative',serif;font-weight:900;
+  text-shadow:0 0 10px rgba(255,229,179,0.95),0 0 4px var(--lol-gold);
+  transform:translate(-50%,-50%) scale(0);opacity:0;}
+.poro-sparkles .spk.burst{animation:spk-burst 0.95s cubic-bezier(0.2,0.7,0.4,1) forwards;}
+.poro-sparkles .spk.gather{animation:spk-gather 0.6s cubic-bezier(0.4,0.1,0.7,0.9) forwards;}
+@keyframes spk-burst{0%{transform:translate(-50%,-50%) scale(0) rotate(0);opacity:0}
+  20%{opacity:1;transform:translate(calc(-50% + var(--tx,0)*0.4),calc(-50% + var(--ty,0)*0.4)) scale(1.1) rotate(120deg)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--tx,0)),calc(-50% + var(--ty,0))) scale(0.5) rotate(300deg)}}
+@keyframes spk-gather{0%{opacity:0;transform:translate(calc(-50% + var(--tx,0)),calc(-50% + var(--ty,0))) scale(0.4) rotate(0)}
+  30%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.2) rotate(180deg)}}
+
+/* ── Away-state placeholder shown while Poro is gone ── */
+.poro-away{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;text-align:center;color:rgba(200,170,110,0.7);}
+.poro-away.show{display:flex;animation:fade-in 0.5s ease both;}
+@keyframes fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.poro-away .pa-icon{font-size:22px;color:var(--lol-gold);
+  text-shadow:0 0 12px rgba(200,170,110,0.7);
+  animation:pa-glyph-spin 4s linear infinite;display:inline-block;}
+@keyframes pa-glyph-spin{to{transform:rotate(360deg)}}
+.poro-away .pa-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px;letter-spacing:0.06em;
+  color:rgba(230,218,184,0.75);}
 
 .poro-floats{position:absolute;inset:0;pointer-events:none;}
 .poro-floats .ph-float{position:absolute;font-size:14px;color:#ff5b8a;font-weight:900;
@@ -590,17 +797,260 @@ body{background:#04070d;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
   <div class="sp-pct" id="spPct">0%</div>
 </div>
 
-<!-- INTRO SCREEN -->
+<!-- ═══ LOADING SCREEN — Champion-Select hybrid ═══ -->
 <div class="intro" id="intro">
-<div class="intro-particles" id="introParticles"></div>
-<div class="intro-inner">
-<div class="intro-line"></div>
-<div class="intro-text">Welcome</div>
-<div class="intro-sub">NexttGamer</div>
-<div class="intro-cta" id="introCta">
-<button>Enter</button>
-</div>
-</div>
+  <!-- Atmospheric blurred splash background -->
+  <div class="intro-splash-bg" style="--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Annie_10.jpg')" aria-hidden="true"></div>
+  <div class="intro-vignette" aria-hidden="true"></div>
+
+  <!-- Slow rotating sigil rune ring -->
+  <div class="intro-rune" aria-hidden="true">
+    <svg viewBox="-200 -200 400 400">
+      <circle cx="0" cy="0" r="195" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="0" cy="0" r="172" fill="none" stroke="currentColor" stroke-width="0.4" stroke-dasharray="3 6"/>
+      <circle cx="0" cy="0" r="150" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="0" cy="0" r="88" fill="none" stroke="currentColor" stroke-width="1"/>
+      <circle cx="0" cy="0" r="62" fill="none" stroke="currentColor" stroke-width="0.4" stroke-dasharray="6 4"/>
+      <g font-family="Cinzel Decorative" font-size="18" fill="currentColor" text-anchor="middle">
+        <text transform="rotate(0) translate(0 -132)">❆</text>
+        <text transform="rotate(45) translate(0 -132)">⦿</text>
+        <text transform="rotate(90) translate(0 -132)">❖</text>
+        <text transform="rotate(135) translate(0 -132)">✵</text>
+        <text transform="rotate(180) translate(0 -132)">❆</text>
+        <text transform="rotate(225) translate(0 -132)">⦿</text>
+        <text transform="rotate(270) translate(0 -132)">❖</text>
+        <text transform="rotate(315) translate(0 -132)">✵</text>
+      </g>
+      <polygon points="0,-100 87,50 -87,50" fill="none" stroke="currentColor" stroke-width="0.8"/>
+      <polygon points="0,100 87,-50 -87,-50" fill="none" stroke="currentColor" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <!-- Viewport corner filigree brackets (champion-select frame illusion) -->
+  <span class="intro-corner tl" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+  <span class="intro-corner tr" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+  <span class="intro-corner bl" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+  <span class="intro-corner br" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+
+  <!-- Top brand band -->
+  <header class="intro-band-top">
+    <div class="intro-mark"><span>Nextt<em>Gamer</em></span><span class="ibt-pip"></span><span>Codex</span></div>
+    <div class="intro-summoner">Summoning <em>TR</em> <span class="is-pip"></span> Platinum <span class="is-pip"></span> Lv 500</div>
+  </header>
+
+  <!-- Center wordmark + portraits -->
+  <main class="intro-center">
+    <div class="intro-eyebrow">⟢  League of Legends Account  ⟡</div>
+    <h1 class="intro-name">NEXTTGAMER</h1>
+    <div class="intro-stars">★ ★ ★ ★ ★</div>
+
+    <div class="intro-portraits">
+      <article class="intro-portrait rar-mythic" style="--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Annie_10.jpg'); --d:0ms">
+        <div class="ip-art"></div>
+        <div class="ip-fade"></div>
+        <span class="ip-corner tl" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <span class="ip-corner br" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <div class="ip-meta">
+          <div class="ip-rarity">MYTHIC</div>
+          <div class="ip-name">Hextech Annie</div>
+        </div>
+      </article>
+      <article class="intro-portrait rar-legendary" style="--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Olaf_3.jpg'); --d:120ms">
+        <div class="ip-art"></div>
+        <div class="ip-fade"></div>
+        <span class="ip-corner tl" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <span class="ip-corner br" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <div class="ip-meta">
+          <div class="ip-rarity">LEGENDARY</div>
+          <div class="ip-name">Brolaf</div>
+        </div>
+      </article>
+      <article class="intro-portrait rar-mythic" style="--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Galio_2.jpg'); --d:240ms">
+        <div class="ip-art"></div>
+        <div class="ip-fade"></div>
+        <span class="ip-corner tl" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <span class="ip-corner br" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <div class="ip-meta">
+          <div class="ip-rarity">MYTHIC</div>
+          <div class="ip-name">Hextech Galio</div>
+        </div>
+      </article>
+      <article class="intro-portrait rar-legendary" style="--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/TwistedFate_3.jpg'); --d:360ms">
+        <div class="ip-art"></div>
+        <div class="ip-fade"></div>
+        <span class="ip-corner tl" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <span class="ip-corner br" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <div class="ip-meta">
+          <div class="ip-rarity">LEGENDARY</div>
+          <div class="ip-name">The Magnificent Twisted Fate</div>
+        </div>
+      </article>
+      <article class="intro-portrait rar-legendary" style="--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/TwistedFate_25.jpg'); --d:480ms">
+        <div class="ip-art"></div>
+        <div class="ip-fade"></div>
+        <span class="ip-corner tl" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <span class="ip-corner br" aria-hidden="true"><svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 14 L2 2 L14 2" />
+  <path d="M2 22 C2 11, 11 2, 22 2" stroke-width="0.6" opacity="0.7" />
+  <path d="M6 6 L10 6" />
+  <path d="M6 6 L6 10" />
+  <circle cx="2" cy="2" r="1.4" fill="currentColor" stroke="none" />
+  <path d="M2 18 L6 14 L10 18 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M18 2 L14 6 L18 10 L14 14" stroke-width="0.7" opacity="0.65"/>
+  <path d="M22 6 Q19 9 22 12" stroke-width="0.5" opacity="0.5"/>
+  <path d="M6 22 Q9 19 12 22" stroke-width="0.5" opacity="0.5"/>
+</svg></span>
+        <div class="ip-meta">
+          <div class="ip-rarity">LEGENDARY</div>
+          <div class="ip-name">Crime City Nightmare Twisted Fate</div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- Loading bar + cycling status -->
+  <footer class="intro-loader">
+    <div class="intro-status" id="introStatus">Summoning champions...</div>
+    <div class="intro-bar-wrap">
+      <span class="ibw-pip left" aria-hidden="true"></span>
+      <div class="intro-bar"><div class="intro-bar-fill" id="introBarFill"></div></div>
+      <span class="ibw-pip right" aria-hidden="true"></span>
+      <span class="intro-pct" id="introPct">0%</span>
+    </div>
+    <div class="intro-cta" id="introCta">
+      <button type="button">Enter Locker <span class="ic-arrow">▸</span></button>
+    </div>
+  </footer>
 </div>
 
 <!-- Shared fixed atmosphere — same backdrop continuum across every section. -->
@@ -91244,41 +91694,111 @@ Buy on GameBoost
     <span class="poro-snowflake" aria-hidden="true">❄</span>
   </div>
   <div class="poro-stage">
+    <div class="poro-beam" id="poroBeam" aria-hidden="true"></div>
+    <div class="poro-flash" id="poroFlash" aria-hidden="true"></div>
+    <div class="poro-sparkles" id="poroSparkles" aria-hidden="true"></div>
+    <div class="poro-away" id="poroAway" aria-hidden="true">
+      <span class="pa-icon">❆</span>
+      <span class="pa-text">Off on an adventure...</span>
+    </div>
     <div class="poro-bubble" id="poroBubble" aria-live="polite"></div>
     <div class="poro-body" id="poroBody">
-      <svg viewBox="0 0 120 120" aria-hidden="true">
+      <svg viewBox="0 0 120 130" aria-hidden="true">
         <defs>
-          <radialGradient id="poro-blush" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#ffb0bd" stop-opacity="0.95"/>
-            <stop offset="100%" stop-color="#ffb0bd" stop-opacity="0"/>
+          <!-- Sphere shading for main body — bright top-left highlight, deep shadow bottom-right. -->
+          <radialGradient id="poro-body-shade" cx="38%" cy="32%" r="70%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="40%" stop-color="#fafaee"/>
+            <stop offset="78%" stop-color="#ece6d5"/>
+            <stop offset="100%" stop-color="#cdc4ad"/>
           </radialGradient>
+          <!-- Per-puff gradient — same logic, smaller scale. -->
+          <radialGradient id="poro-puff" cx="35%" cy="32%" r="75%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="55%" stop-color="#fafaee"/>
+            <stop offset="100%" stop-color="#d5ceba"/>
+          </radialGradient>
+          <!-- Horn — dark base → mid → bright specular highlight on top edge. -->
+          <linearGradient id="poro-horn" x1="0%" y1="100%" x2="60%" y2="0%">
+            <stop offset="0%" stop-color="#2a1808"/>
+            <stop offset="55%" stop-color="#6a4220"/>
+            <stop offset="100%" stop-color="#b88f50"/>
+          </linearGradient>
+          <!-- Eye pupil with subtle gradient. -->
+          <radialGradient id="poro-eye" cx="50%" cy="55%" r="55%">
+            <stop offset="0%" stop-color="#000000"/>
+            <stop offset="100%" stop-color="#2a1f18"/>
+          </radialGradient>
+          <!-- Cheek blush. -->
+          <radialGradient id="poro-blush" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffaab9" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#ffaab9" stop-opacity="0"/>
+          </radialGradient>
+          <!-- Tongue. -->
+          <linearGradient id="poro-tongue" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ff9bb0"/>
+            <stop offset="100%" stop-color="#ff5a7c"/>
+          </linearGradient>
+          <!-- Ground shadow blur. -->
+          <filter id="poro-shadow-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3.4"/>
+          </filter>
+          <!-- Specular top arc — thin curved highlight on body crown. -->
+          <linearGradient id="poro-sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </linearGradient>
         </defs>
-        <!-- fluffy body cloud -->
-        <g class="poro-fluff" fill="#fafaee">
-          <ellipse cx="60" cy="68" rx="40" ry="34"/>
-          <circle cx="22" cy="56" r="11"/>
-          <circle cx="98" cy="56" r="11"/>
-          <circle cx="20" cy="82" r="10"/>
-          <circle cx="100" cy="82" r="10"/>
-          <circle cx="36" cy="38" r="9"/>
-          <circle cx="84" cy="38" r="9"/>
-          <circle cx="60" cy="32" r="10"/>
-          <circle cx="60" cy="100" r="9"/>
+
+        <!-- Ground contact shadow (sits below body, gives "floating" sense) -->
+        <ellipse cx="60" cy="118" rx="38" ry="6" fill="#000" opacity="0.4" filter="url(#poro-shadow-blur)"/>
+
+        <!-- Horns BEHIND body so they peek out properly -->
+        <path d="M44 32 Q42 16 50 16 Q52 22 53 34 Z" fill="url(#poro-horn)"/>
+        <path d="M76 32 Q78 16 70 16 Q68 22 67 34 Z" fill="url(#poro-horn)"/>
+        <!-- Horn specular line -->
+        <path d="M48 32 Q47 22 50 19" stroke="#dba978" stroke-width="0.8" fill="none" opacity="0.85"/>
+        <path d="M72 32 Q73 22 70 19" stroke="#dba978" stroke-width="0.8" fill="none" opacity="0.85"/>
+
+        <!-- Body fluff cloud — each puff its own gradient (more dimensional than flat). -->
+        <g class="poro-fluff">
+          <ellipse cx="60" cy="70" rx="40" ry="34" fill="url(#poro-body-shade)"/>
+          <circle cx="22" cy="58" r="11" fill="url(#poro-puff)"/>
+          <circle cx="98" cy="58" r="11" fill="url(#poro-puff)"/>
+          <circle cx="20" cy="84" r="10" fill="url(#poro-puff)"/>
+          <circle cx="100" cy="84" r="10" fill="url(#poro-puff)"/>
+          <circle cx="36" cy="40" r="9" fill="url(#poro-puff)"/>
+          <circle cx="84" cy="40" r="9" fill="url(#poro-puff)"/>
+          <circle cx="60" cy="34" r="10" fill="url(#poro-puff)"/>
+          <circle cx="60" cy="102" r="9" fill="url(#poro-puff)"/>
         </g>
-        <!-- ear tufts / horns -->
-        <path d="M46 30 Q44 18 50 18 Q52 22 53 34 Z" fill="#6a4220"/>
-        <path d="M74 30 Q76 18 70 18 Q68 22 67 34 Z" fill="#6a4220"/>
-        <!-- eyes -->
-        <ellipse cx="50" cy="58" rx="3.5" ry="4.2" fill="#181818"/>
-        <ellipse cx="70" cy="58" rx="3.5" ry="4.2" fill="#181818"/>
-        <circle cx="51" cy="56.4" r="1.3" fill="#fff"/>
-        <circle cx="71" cy="56.4" r="1.3" fill="#fff"/>
-        <!-- blush -->
-        <circle cx="40" cy="70" r="5" fill="url(#poro-blush)"/>
-        <circle cx="80" cy="70" r="5" fill="url(#poro-blush)"/>
-        <!-- mouth + tongue -->
-        <path d="M54 72 Q60 78 66 72" stroke="#3a2417" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <ellipse cx="60" cy="75.5" rx="3.2" ry="1.8" fill="#ff89a0"/>
+
+        <!-- Top specular sheen — thin arc giving polished/wet look -->
+        <path d="M30 50 Q60 38 90 50" stroke="url(#poro-sheen)" stroke-width="3" fill="none" opacity="0.55"/>
+
+        <!-- Soft inner shadow ring (gives spherical fall-off) -->
+        <ellipse cx="60" cy="78" rx="38" ry="28" fill="none" stroke="#a8a08a" stroke-width="0.6" opacity="0.18"/>
+
+        <!-- Eyes — bigger pupil + 2 highlights for depth -->
+        <ellipse cx="50" cy="60" rx="3.8" ry="4.6" fill="url(#poro-eye)"/>
+        <ellipse cx="70" cy="60" rx="3.8" ry="4.6" fill="url(#poro-eye)"/>
+        <!-- Big bright highlight -->
+        <circle cx="51.2" cy="58" r="1.5" fill="#ffffff"/>
+        <circle cx="71.2" cy="58" r="1.5" fill="#ffffff"/>
+        <!-- Small accent highlight -->
+        <circle cx="49" cy="62" r="0.7" fill="#ffffff" opacity="0.7"/>
+        <circle cx="69" cy="62" r="0.7" fill="#ffffff" opacity="0.7"/>
+
+        <!-- Blush (wider, softer) -->
+        <ellipse cx="38" cy="72" rx="6" ry="4.5" fill="url(#poro-blush)"/>
+        <ellipse cx="82" cy="72" rx="6" ry="4.5" fill="url(#poro-blush)"/>
+
+        <!-- Mouth — thicker arc -->
+        <path d="M53 74 Q60 80 67 74" stroke="#2b1a0e" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Tongue with gradient -->
+        <ellipse cx="60" cy="77" rx="3.4" ry="2" fill="url(#poro-tongue)"/>
+        <!-- Tongue highlight -->
+        <ellipse cx="59" cy="76" rx="1.6" ry="0.7" fill="#ffffff" opacity="0.55"/>
       </svg>
       <div class="poro-zzz" aria-hidden="true">Z<span>Z</span></div>
     </div>
@@ -91296,30 +91816,73 @@ Buy on GameBoost
 </aside>
 
 <script>
-/* INTRO */
+/* INTRO — Champion-Select loading screen */
 (function(){
-const ip=document.getElementById('introParticles');
-for(let i=0;i<20;i++){
-const d=document.createElement('div');
-d.className='ip';
-d.style.left=Math.random()*100+'%';
-d.style.top=Math.random()*100+'%';
-d.style.animationDelay=Math.random()*2+'s';
-d.style.animationDuration=(2+Math.random()*2)+'s';
-ip.appendChild(d);
-}
-const intro=document.getElementById('intro');
-setTimeout(()=>intro.classList.add('step1'),300);
-let dismissed=false;
-function dismiss(){
-if(dismissed)return;dismissed=true;
-if(window._startMusic)window._startMusic();
-intro.classList.add('done');
-setTimeout(()=>intro.remove(),2000);
-}
-document.getElementById('introCta').addEventListener('click',dismiss);
-intro.addEventListener('click',dismiss);
-intro.addEventListener('touchstart',dismiss,{passive:true});
+  const intro = document.getElementById('intro');
+  if (!intro) return;
+  const bar = document.getElementById('introBarFill');
+  const pct = document.getElementById('introPct');
+  const status = document.getElementById('introStatus');
+  const cta = document.getElementById('introCta');
+  const STATUSES = [
+    { from: 0,  text: 'Summoning champions...' },
+    { from: 22, text: 'Forging splashes...' },
+    { from: 46, text: 'Polishing chromas...' },
+    { from: 72, text: 'Loading inventory...' },
+    { from: 96, text: 'Ready.' },
+  ];
+  let lastStatusIdx = 0;
+  function setStatus(idx){
+    if (idx === lastStatusIdx) return;
+    lastStatusIdx = idx;
+    status.classList.add('swap');
+    setTimeout(() => {
+      status.textContent = STATUSES[idx].text;
+      status.classList.remove('swap');
+    }, 220);
+  }
+  let dismissed = false;
+  function dismiss(){
+    if (dismissed) return;
+    dismissed = true;
+    if (window._startMusic) window._startMusic();
+    intro.classList.add('done');
+    setTimeout(() => intro.remove(), 1000);
+  }
+  // Bar fill animation: linear over ~2.4s
+  const DURATION = 2400;
+  const startedAt = performance.now() + 380; // small head start so CSS animations begin first
+  function tick(now){
+    const t = Math.max(0, Math.min(1, (now - startedAt) / DURATION));
+    const p = Math.round(t * 100);
+    bar.style.width = p + '%';
+    pct.textContent = p + '%';
+    // Find which status corresponds to this %
+    let idx = 0;
+    for (let i = 0; i < STATUSES.length; i++){ if (p >= STATUSES[i].from) idx = i; }
+    setStatus(idx);
+    if (t < 1) requestAnimationFrame(tick);
+    else intro.classList.add('ready');
+  }
+  requestAnimationFrame(tick);
+  // Allow click anywhere on intro to skip → instant ready
+  intro.addEventListener('click', (e) => {
+    if (!intro.classList.contains('ready')){
+      // Skip: jump bar to 100% and mark ready
+      bar.style.width = '100%';
+      pct.textContent = '100%';
+      setStatus(STATUSES.length - 1);
+      intro.classList.add('ready');
+      // Don't dismiss yet — let user explicitly click ENTER button.
+      return;
+    }
+    if (e.target.closest('.intro-cta')) dismiss();
+  });
+  // CTA explicit click
+  document.getElementById('introCta').addEventListener('click', (e) => {
+    e.stopPropagation();
+    dismiss();
+  });
 })();
 
 /* Feed-the-Poro mini-game — bottom-left fixed widget */
@@ -91330,24 +91893,32 @@ intro.addEventListener('touchstart',dismiss,{passive:true});
   const snack = document.getElementById('poroSnack');
   const bubble = document.getElementById('poroBubble');
   const floats = document.getElementById('poroFloats');
+  const beam = document.getElementById('poroBeam');
+  const flash = document.getElementById('poroFlash');
+  const sparkles = document.getElementById('poroSparkles');
+  const away = document.getElementById('poroAway');
   const hearts = pet.querySelectorAll('.ph-heart');
   const MAX = 5;
   let happy = 3;
   let snackResetT = null;
   let chompT = null;
   let lastFeed = 0;
+  /** Lifecycle: idle → celebrating → leaving → dissolving → away → returning → idle */
+  let state = 'idle';
   const PHRASES = ['Yum!','Pawsome!','More!','♥ ♥','Hehe!','So good!','Mmm!','Squee!','✨'];
   const IDLE_CHIRPS = ['Hi!','Mmf...','Snax?','♥','Hello~','...zzz?'];
+  const FAREWELLS = ['Bye bye! ✨','Wheee~','Adventure time!','Catch me later!','✨ ✨ ✨'];
+  const RETURNS  = ['I’m back!','Hello again ♥','Did you miss me?','Snax?','Hi hi!'];
   function render(){
     hearts.forEach((h, i) => h.classList.toggle('lit', i < happy));
     body.classList.toggle('sad', happy === 0);
     body.classList.toggle('happy', happy === MAX);
   }
-  function bubbleShow(text){
+  function bubbleShow(text, hold){
     bubble.textContent = text;
     bubble.classList.add('show');
     clearTimeout(bubble._t);
-    bubble._t = setTimeout(() => bubble.classList.remove('show'), 1300);
+    bubble._t = setTimeout(() => bubble.classList.remove('show'), hold || 1300);
   }
   function dropHeart(sparkle){
     const heart = document.createElement('div');
@@ -91359,10 +91930,86 @@ intro.addEventListener('touchstart',dismiss,{passive:true});
     floats.appendChild(heart);
     setTimeout(() => heart.remove(), 1500);
   }
+  function spawnSparkles(mode){
+    sparkles.innerHTML = '';
+    const glyphs = ['✨','❆','✵','❖','★'];
+    for (let i = 0; i < 12; i++){
+      const s = document.createElement('span');
+      s.className = 'spk ' + (mode === 'gather' ? 'gather' : 'burst');
+      s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+      const angle = (i / 12) * Math.PI * 2 + Math.random() * 0.3;
+      const dist = 50 + Math.random() * 30;
+      s.style.setProperty('--tx', Math.round(Math.cos(angle) * dist) + 'px');
+      s.style.setProperty('--ty', Math.round(Math.sin(angle) * dist) + 'px');
+      s.style.animationDelay = (i * 18) + 'ms';
+      sparkles.appendChild(s);
+    }
+    setTimeout(() => { sparkles.innerHTML = ''; }, 1400);
+  }
+  function teleport(){
+    if (state !== 'idle' && state !== 'celebrating') return;
+    state = 'celebrating';
+    // Phase 1 (0.0-0.6s): joy spin
+    body.classList.add('celebrating');
+    bubbleShow(FAREWELLS[Math.floor(Math.random() * FAREWELLS.length)], 1500);
+    setTimeout(() => {
+      // Phase 2 (0.6-1.4s): beam ascent + Poro lifts
+      state = 'leaving';
+      body.classList.remove('celebrating');
+      body.classList.add('leaving');
+      beam.classList.add('lit');
+    }, 600);
+    setTimeout(() => {
+      // Phase 3 (1.4-1.85s): dissolution flash + sparkle burst
+      state = 'dissolving';
+      body.classList.remove('leaving');
+      body.classList.add('dissolving');
+      flash.classList.add('burst');
+      spawnSparkles('burst');
+      setTimeout(() => flash.classList.remove('burst'), 450);
+    }, 1450);
+    setTimeout(() => {
+      // Phase 4 (1.85-5.0s): Poro AWAY — beam fades, placeholder appears
+      state = 'away';
+      body.classList.remove('dissolving');
+      body.classList.add('gone');
+      beam.classList.remove('lit');
+      beam.classList.add('fading');
+      away.classList.add('show');
+      happy = 0;
+      hearts.forEach(h => h.classList.remove('lit'));
+      setTimeout(() => beam.classList.remove('fading'), 750);
+    }, 1880);
+    setTimeout(() => {
+      // Phase 5 (~5.0-5.6s): return — sparkles gather, beam reappears, Poro materializes
+      state = 'returning';
+      away.classList.remove('show');
+      spawnSparkles('gather');
+      beam.classList.add('lit');
+      flash.classList.add('burst');
+      setTimeout(() => {
+        body.classList.remove('gone');
+        body.classList.add('returning');
+        flash.classList.remove('burst');
+      }, 280);
+    }, 5000);
+    setTimeout(() => {
+      // Finalize: cleanup classes, beam dissipates, reset happiness
+      body.classList.remove('returning');
+      beam.classList.remove('lit');
+      beam.classList.add('fading');
+      setTimeout(() => beam.classList.remove('fading'), 750);
+      happy = 2;
+      render();
+      bubbleShow(RETURNS[Math.floor(Math.random() * RETURNS.length)], 1600);
+      state = 'idle';
+    }, 5650);
+  }
   function feed(e){
     if (e) e.stopPropagation();
+    if (state !== 'idle' && state !== 'celebrating') return; // ignore during teleport
     const now = Date.now();
-    if (now - lastFeed < 380) return; // debounce spamming
+    if (now - lastFeed < 380) return;
     lastFeed = now;
     if (happy < MAX) happy++;
     render();
@@ -91378,15 +92025,19 @@ intro.addEventListener('touchstart',dismiss,{passive:true});
     dropHeart(happy === MAX);
     setTimeout(() => dropHeart(happy === MAX), 110);
     setTimeout(() => dropHeart(happy === MAX), 240);
+    if (happy === MAX){
+      setTimeout(teleport, 900); // brief moment to admire full hearts, then poof
+    }
   }
   pet.addEventListener('click', feed);
   snack.addEventListener('click', feed);
   setInterval(() => {
+    if (state !== 'idle') return; // no decay while away
     if (happy > 0 && !document.hidden) happy--;
     render();
   }, 30000);
   function idleChirp(){
-    if (!document.hidden && happy > 0 && Math.random() < 0.6){
+    if (state === 'idle' && !document.hidden && happy > 0 && Math.random() < 0.6){
       bubbleShow(IDLE_CHIRPS[Math.floor(Math.random() * IDLE_CHIRPS.length)]);
     }
     setTimeout(idleChirp, 14000 + Math.random() * 10000);
