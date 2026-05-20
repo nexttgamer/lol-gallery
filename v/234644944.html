@@ -2822,9 +2822,9 @@ const ACC = {
 const intro = document.getElementById('intro');
 const page = document.getElementById('page');
 
-// Transition variant selector — ?t=breach | hole | scope (default: breach)
-const transitionVariant = (new URLSearchParams(location.search).get('t') || 'breach').toLowerCase();
-document.body.dataset.transition = ['breach','hole','scope'].includes(transitionVariant) ? transitionVariant : 'breach';
+// Transition variant selector — ?t=hole | breach | scope (default: hole)
+const transitionVariant = (new URLSearchParams(location.search).get('t') || 'hole').toLowerCase();
+document.body.dataset.transition = ['breach','hole','scope'].includes(transitionVariant) ? transitionVariant : 'hole';
 
 let introSkipped = false;
 
