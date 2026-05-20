@@ -49,13 +49,25 @@ body{background:#030508;color:#a09b8c;font-family:'Inter',sans-serif;min-height:
 @keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}85%{opacity:0.7}100%{transform:translateY(-10vh) scale(1);opacity:0}}
 
 /* ═══ HERO ═══ */
-.hero{position:relative;height:78vh;min-height:420px;overflow:hidden;z-index:2}
+.hero{position:relative;height:78vh;min-height:420px;overflow:hidden;z-index:2;background:#030508}
 .hero-slides{position:absolute;inset:0}
-.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 2s ease;background-size:cover;background-position:center}
+/* SHARP foreground: native-resolution splash (1215x717 from DDragon).
+   background-size:contain shows the full image at the largest size that
+   still fits the hero box vertically -- far less upscale on Retina than
+   cover would force. The blurred ::before underneath fills the L/R bands
+   so the page still reads as a single full-bleed image, not letterboxed. */
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 2s ease;
+  background-position:center;background-repeat:no-repeat;background-size:contain;
+  image-rendering:high-quality;-webkit-backface-visibility:hidden;transform:translateZ(0)}
 .hero-slide.active{opacity:1}
-.hero-slide:nth-child(1){background-image:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Annie_10.jpg')}
-.hero-slide:nth-child(2){background-image:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Olaf_3.jpg')}
-.hero-slide:nth-child(3){background-image:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Galio_2.jpg')}
+/* Per-slide image lives in a CSS variable so the blurred ::before can
+   re-use it without writing the URL twice. */
+.hero-slide:nth-child(1){--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Annie_10.jpg');background-image:var(--bg)}
+.hero-slide:nth-child(2){--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Olaf_3.jpg');background-image:var(--bg)}
+.hero-slide:nth-child(3){--bg:url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Galio_2.jpg');background-image:var(--bg)}
+.hero-slide::before{content:'';position:absolute;inset:-32px;z-index:-1;
+  background-image:var(--bg);background-size:cover;background-position:center;
+  filter:blur(48px) brightness(0.55) saturate(1.12);transform:translateZ(0)}
 .hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,5,8,0.4) 0%,rgba(3,5,8,0.15) 30%,rgba(3,5,8,0.4) 60%,rgba(3,5,8,0.85) 100%)}
 .hero-vignette{position:absolute;inset:0;box-shadow:inset 0 0 200px rgba(0,0,0,0.8);pointer-events:none;z-index:2}
 .hero-content{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 30px}
