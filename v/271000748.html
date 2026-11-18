@@ -1595,7 +1595,10 @@ body[data-transition="scope"] .page.live::before{
     </div>
     <div class="rarity-row" id="rarityRow">
       <!-- GEN:RARITY_PILLS -->
-      <div class="rarity-pill" style="--rc:#888888"><span class="dot"></span>SELECT <span class="num">18</span></div>
+      <div class="rarity-pill" style="--rc:#FFB940"><span class="dot"></span>KNIFE <span class="num">1</span></div>
+      <div class="rarity-pill" style="--rc:#FF4655"><span class="dot"></span>EXCLUSIVE <span class="num">2</span></div>
+      <div class="rarity-pill" style="--rc:#D4A857"><span class="dot"></span>PREMIUM <span class="num">5</span></div>
+      <div class="rarity-pill" style="--rc:#5BA897"><span class="dot"></span>DELUXE <span class="num">10</span></div>
       <!-- /GEN:RARITY_PILLS -->
     </div>
     <div class="skin-toolbar">
@@ -1611,7 +1614,96 @@ body[data-transition="scope"] .page.live::before{
     </div>
     <div class="skin-grid stagger" id="skinGrid">
       <!-- GEN:SKINS_GRID -->
-      <div style="grid-column:1/-1;text-align:center;padding:60px;font-family:'JetBrains Mono',monospace;color:#768079;letter-spacing:3px;text-transform:uppercase;font-size:0.8rem">// no weapon skins on file</div>
+      <div class="skin-card knife" style="--tier-c:#FFB940" data-weapontype="knife">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/f82aa022-4a6c-fa40-105d-92af6510ae1b/displayicon.png" alt="Kingdom Knife" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">KINGDOM KNIFE</div>
+        <div class="skin-tier">KNIFE</div>
+      </div>
+      <div class="skin-card exclusive" style="--tier-c:#FF4655" data-weapontype="rifle">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/b9ee2457-481c-6776-3f5b-0ca8e8f90c89/displayicon.png" alt="Prime Vandal" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">PRIME VANDAL</div>
+        <div class="skin-tier">EXCLUSIVE</div>
+      </div>
+      <div class="skin-card exclusive" style="--tier-c:#FF4655" data-weapontype="rifle">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/44b7b110-46bf-ccbb-2613-29a5df296461/displayicon.png" alt="Prime//2.0 Phantom" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">PRIME//2.0 PHANTOM</div>
+        <div class="skin-tier">EXCLUSIVE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#D4A857" data-weapontype="sniper">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/0bd5da19-491f-dd4a-27e2-c9959b10a87a/displayicon.png" alt="Luxe Operator" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">LUXE OPERATOR</div>
+        <div class="skin-tier">PREMIUM</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#D4A857" data-weapontype="rifle">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/83697aaa-415d-3ec3-0205-fcab8de464d2/fullrender.png" alt="Kingdom Phantom" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">KINGDOM PHANTOM</div>
+        <div class="skin-tier">PREMIUM</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#D4A857" data-weapontype="smg">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/10da9310-479f-df03-8229-809a69115ff3/fullrender.png" alt="Kingdom Spectre" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">KINGDOM SPECTRE</div>
+        <div class="skin-tier">PREMIUM</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#D4A857" data-weapontype="shotgun">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/75e55415-45ce-b48b-b471-84bef2368e33/displayicon.png" alt="Kingdom Bucky" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">KINGDOM BUCKY</div>
+        <div class="skin-tier">PREMIUM</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#D4A857" data-weapontype="pistol">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/e7644f3c-42d3-8336-5135-17a4883032fd/fullrender.png" alt="Kingdom Classic" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">KINGDOM CLASSIC</div>
+        <div class="skin-tier">PREMIUM</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="rifle">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/6f3a2a08-4f32-dbdc-8dca-628a5c840052/displayicon.png" alt=".EXE Vandal" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">.EXE VANDAL</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="heavy">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/cda41b87-4d3a-c17c-5f6d-8990cc9c5efb/displayicon.png" alt=".EXE Odin" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">.EXE ODIN</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="sniper">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/727bb66d-40e5-49e4-6368-44b95c56e8e0/fullrender.png" alt="Couture Marshal" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">COUTURE MARSHAL</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="pistol">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/310b80d8-4e1b-b4f0-b713-9dad458ce734/displayicon.png" alt="Wunderkind Shorty" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">WUNDERKIND SHORTY</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="rifle">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/199b8536-488a-09e6-8592-ff9cf21b4ceb/displayicon.png" alt="Couture Bulldog" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">COUTURE BULLDOG</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="shotgun">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/066f07a2-42c5-4197-497a-f0a3fdbb4a6b/fullrender.png" alt=".EXE Judge" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">.EXE JUDGE</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="pistol">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskins/34919680-4f00-554b-0c2b-95acca7d0d36/displayicon.png" alt="Pistolinha Classic" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">PISTOLINHA CLASSIC</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="pistol">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/12966603-4cb3-03dd-bf2e-338fb15d144f/fullrender.png" alt=".EXE Ghost" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">.EXE GHOST</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="smg">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/802491b0-4a8b-f3d9-317f-088c5b0dedd6/fullrender.png" alt="Couture Stinger" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">COUTURE STINGER</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
+      <div class="skin-card" style="--tier-c:#5BA897" data-weapontype="pistol">
+        <div class="skin-img-wrap"><img src="https://media.valorant-api.com/weaponskinchromas/67db243d-4393-f827-50ab-69badca7b162/fullrender.png" alt="Couture Frenzy" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=0"></div>
+        <div class="skin-name">COUTURE FRENZY</div>
+        <div class="skin-tier">DELUXE</div>
+      </div>
       <!-- /GEN:SKINS_GRID -->
     </div>
   </section>
@@ -1675,7 +1767,7 @@ body[data-transition="scope"] .page.live::before{
 window.__MUSIC_URL = "https://nexttgamer.github.io/lol-gallery/music/valorant-track.mp3";
 const ACC = {
   agents: [{"name":"Cypher","img":"https://media.valorant-api.com/agents/117ed9e3-49f3-6512-3ccf-0cada7e3823b/fullportrait.png","tag":"SENTINEL"},{"name":"Omen","img":"https://media.valorant-api.com/agents/8e253930-4c05-31dd-1b6c-968525494517/fullportrait.png","tag":"CONTROLLER"},{"name":"Raze","img":"https://media.valorant-api.com/agents/f94c3b30-42be-e959-889c-5aa313dba261/fullportrait.png","tag":"DUELIST"},{"name":"Breach","img":"https://media.valorant-api.com/agents/5f8d3a7f-467b-97f3-062c-13acf203c006/fullportrait.png","tag":"INITIATOR"},{"name":"Reyna","img":"https://media.valorant-api.com/agents/a3bfb853-43b2-7238-a4f1-ad90e9e46bcc/fullportrait.png","tag":"DUELIST"},{"name":"Killjoy","img":"https://media.valorant-api.com/agents/1e58de9c-4950-5125-93e9-a0aee9f98746/fullportrait.png","tag":"SENTINEL"},{"name":"Viper","img":"https://media.valorant-api.com/agents/707eab51-4836-f488-046a-cda6bf494859/fullportrait.png","tag":"CONTROLLER"}],
-  skins: [],
+  skins: [{"name":"Kingdom Knife","img":"https://media.valorant-api.com/weaponskins/f82aa022-4a6c-fa40-105d-92af6510ae1b/displayicon.png","tier":"knife","tierLabel":"KNIFE","tierColor":"#FFB940","weaponType":"knife"},{"name":"Prime Vandal","img":"https://media.valorant-api.com/weaponskins/b9ee2457-481c-6776-3f5b-0ca8e8f90c89/displayicon.png","tier":"exclusive","tierLabel":"EXCLUSIVE","tierColor":"#FF4655","weaponType":"rifle"},{"name":"Prime//2.0 Phantom","img":"https://media.valorant-api.com/weaponskins/44b7b110-46bf-ccbb-2613-29a5df296461/displayicon.png","tier":"exclusive","tierLabel":"EXCLUSIVE","tierColor":"#FF4655","weaponType":"rifle"},{"name":"Luxe Operator","img":"https://media.valorant-api.com/weaponskins/0bd5da19-491f-dd4a-27e2-c9959b10a87a/displayicon.png","tier":"premium","tierLabel":"PREMIUM","tierColor":"#D4A857","weaponType":"sniper"},{"name":"Kingdom Phantom","img":"https://media.valorant-api.com/weaponskinchromas/83697aaa-415d-3ec3-0205-fcab8de464d2/fullrender.png","tier":"premium","tierLabel":"PREMIUM","tierColor":"#D4A857","weaponType":"rifle"},{"name":"Kingdom Spectre","img":"https://media.valorant-api.com/weaponskinchromas/10da9310-479f-df03-8229-809a69115ff3/fullrender.png","tier":"premium","tierLabel":"PREMIUM","tierColor":"#D4A857","weaponType":"smg"},{"name":"Kingdom Bucky","img":"https://media.valorant-api.com/weaponskins/75e55415-45ce-b48b-b471-84bef2368e33/displayicon.png","tier":"premium","tierLabel":"PREMIUM","tierColor":"#D4A857","weaponType":"shotgun"},{"name":"Kingdom Classic","img":"https://media.valorant-api.com/weaponskinchromas/e7644f3c-42d3-8336-5135-17a4883032fd/fullrender.png","tier":"premium","tierLabel":"PREMIUM","tierColor":"#D4A857","weaponType":"pistol"},{"name":".EXE Vandal","img":"https://media.valorant-api.com/weaponskins/6f3a2a08-4f32-dbdc-8dca-628a5c840052/displayicon.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"rifle"},{"name":".EXE Odin","img":"https://media.valorant-api.com/weaponskins/cda41b87-4d3a-c17c-5f6d-8990cc9c5efb/displayicon.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"heavy"},{"name":"Couture Marshal","img":"https://media.valorant-api.com/weaponskinchromas/727bb66d-40e5-49e4-6368-44b95c56e8e0/fullrender.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"sniper"},{"name":"Wunderkind Shorty","img":"https://media.valorant-api.com/weaponskins/310b80d8-4e1b-b4f0-b713-9dad458ce734/displayicon.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"pistol"},{"name":"Couture Bulldog","img":"https://media.valorant-api.com/weaponskins/199b8536-488a-09e6-8592-ff9cf21b4ceb/displayicon.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"rifle"},{"name":".EXE Judge","img":"https://media.valorant-api.com/weaponskinchromas/066f07a2-42c5-4197-497a-f0a3fdbb4a6b/fullrender.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"shotgun"},{"name":"Pistolinha Classic","img":"https://media.valorant-api.com/weaponskins/34919680-4f00-554b-0c2b-95acca7d0d36/displayicon.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"pistol"},{"name":".EXE Ghost","img":"https://media.valorant-api.com/weaponskinchromas/12966603-4cb3-03dd-bf2e-338fb15d144f/fullrender.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"pistol"},{"name":"Couture Stinger","img":"https://media.valorant-api.com/weaponskinchromas/802491b0-4a8b-f3d9-317f-088c5b0dedd6/fullrender.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"smg"},{"name":"Couture Frenzy","img":"https://media.valorant-api.com/weaponskinchromas/67db243d-4393-f827-50ab-69badca7b162/fullrender.png","tier":"deluxe","tierLabel":"DELUXE","tierColor":"#5BA897","weaponType":"pistol"}],
   buddies: [], sprays: [], cards: [], titles: [],
   meta: {
     region: "AP",
